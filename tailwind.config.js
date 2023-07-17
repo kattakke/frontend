@@ -6,7 +6,8 @@ export default {
       "main": "#2270B8",
       "accent": "#DD8F47",
       "base": "#FFFCF3",
-      "white": "#FFFFFF"
+      "white": "#FFFFFF",
+      "gray": "#CCCCCC"
     },
     extend: {},
   },
