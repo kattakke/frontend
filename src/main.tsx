@@ -1,10 +1,27 @@
-import React from "react"
-import ReactDOM from "react-dom/client"
-import App from "./App"
-import "./index.css"
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import './index.css'
+import Top from './pages/App'
+import Detail from './pages/Detail'
+import Home from './pages/Home'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Search from './pages/Search'
+import Setting from './pages/Setting'
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Top />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/detail" element={<Detail />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/setting" element={<Setting />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 )
