@@ -5,17 +5,17 @@ import Button from '../components/Button'
 const Login = () => {
   return (
     <div className='py-32'>
-      <div className='bg-white rounded-3xl px-16 py-16 flex-col items-center justify-center space-y-12 shadow-md'>
+      <div className='bg-white rounded-3xl px-8 py-16 flex-col items-center justify-center space-y-12 shadow-md'>
         <div className='flex-col space-y-2'>
-        <div className='font-light'>メールアドレス</div>
+          <p className='font-light'>メールアドレス</p>
           <div className='flex'>
-          <TextField className='flex-auto font-medium'></TextField>
+          <TextField className='flex-auto font-medium' placeholder='メールアドレス'></TextField>
           </div>
         </div>
         <div className='flex-col space-y-2'>
-          <div className='font-light'>パスワード</div>
+          <p className='font-light'>パスワード</p>
           <div className='flex'>
-          <TextField className='flex-auto font-medium'></TextField>
+          <TextField className='flex-auto font-medium' placeholder='パスワード'></TextField>
           </div>
         </div>
         <div className='flex items-center justify-center'>
