@@ -1,0 +1,454 @@
+openapi: 3.0.3
+info:
+  title: Swagger Kattakke - OpenAPI 3.0
+  description: |-
+    (*^^*)
+  termsOfService: http://localhost/terms/
+  contact:
+    email: admin@example.com
+  license:
+    name: Kattakke License
+    url: http://localhost/licenses
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Kattakke
+  url: http://localhost/
+servers:
+  - url: http://localhost/api/v0
+tags:
+  - name: auth
+    description: Auth
+  - name: book
+    description: book
+  - name: search
+    description: search
+  - name: etc
+    description: etc
+paths:
+  /auth/me:
+    get:
+      tags:
+        - auth
+      summary: Returns me
+      description: Returns me
+      operationId: authMe
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - api_key: []
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Returns me
+      description: Returns me
+      operationId: authLogin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                password:
+                  type: string
+                
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - api_key: []
+  
+  /auth/logout:
+    patch:
+      tags:
+        - auth
+      summary: logout
+      description: logout
+      operationId: authLogout
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    
+  /users:
+    post:
+      tags:
+        - user
+      summary: register
+      description: register
+      operationId: userRegister
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /users/{userId}:
+    get:
+      tags:
+        - user
+      summary: get user info
+      description: get user info
+      operationId: getUserInfo
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+            format: UUID
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+    patch:
+      tags:
+        - user
+      summary: patch user info
+      description: patch user info
+      operationId: patchUserInfo
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+            format: UUID
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+    delete:
+      tags:
+        - user
+      summary: delete user info
+      description: delete user info
+      operationId: deleteUserInfo
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+            format: UUID
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /users/{userId}/shelf:
+    get:
+      tags:
+        - user
+      summary: get user shelf
+      description: get user shelf
+      operationId: getUserShelf
+      parameters:
+        - name: userId
+          in: path
+          description: ID of user
+          required: true
+          schema:
+            type: string
+            format: UUID
+        - name: title
+          in: query
+          description: The title of book
+          required: false
+          schema:
+            type: string
+        - name: tag
+          in: query
+          description: The tag of book
+          required: false
+          schema:
+            type: string
+        - name: isbn
+          in: query
+          description: The isbn of book
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  format: UUID
+  /books:
+    post:
+      tags:
+        - book
+      summary: post book info
+      description: post book info
+      operationId: postBook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isbn:
+                  type: string
+                title:
+                  type: string
+                author:
+                  type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+  /books/{bookId}:
+    get:
+      tags:
+        - book
+      summary: get book info
+      description: get book info
+      operationId: getBookInfo
+      parameters:
+        - name: bookId
+          in: path
+          description: ID of book
+          required: true
+          schema:
+            type: string
+            format: UUID
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    patch:
+      tags:
+        - book
+      summary: patch book info
+      description: patch book info
+      operationId: patchBookInfo
+      parameters:
+        - name: bookId
+          in: path
+          description: ID of book
+          required: true
+          schema:
+            type: string
+            format: UUID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isbn:
+                  type: string
+                title:
+                  type: string
+                author:
+                  type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+    delete:
+      tags:
+        - book
+      summary: delete book info
+      description: delete book info
+      operationId: deleteBookInfo
+      parameters:
+        - name: bookId
+          in: path
+          description: ID of book
+          required: true
+          schema:
+            type: string
+            format: UUID
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+  /search:
+    get:
+      tags:
+        - search
+      summary: search book
+      description: search book
+      operationId: getSearchBook
+      parameters:
+        - name: title
+          in: query
+          description: The title of book
+          required: false
+          schema:
+            type: string
+        - name: isbn
+          in: query
+          description: The isbn of book
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  isbn:
+                    type: string
+                  title:
+                    type: string
+                  author:
+                    type: string
+  /health:
+    get:
+      tags:
+        - etc
+      summary: Health Check API
+      description: Always return 200
+      operationId: healthCheck
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        bookdId:
+          type: string
+          format: UUID
+        isbn:
+          type: string
+          nullable: true
+        title:
+          type: string
+        author:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: UUID
+        name:
+          type: string
+        password:
+          type: string
+        jwt-secret:
+          type: string
+        shelf:
+          type: string
+          format: UUID
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    
+    Shelf:
+      type: object
+      properties:
+        shelfId:
+          type: string
+          format: UUID
+        books:
+          type: array
+          items:
+            type: string
+            format: UUID
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+  securitySchemes:
+    petstore_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
+          scopes:
+            write:pets: modify pets in your account
+            read:pets: read your pets
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
