@@ -7,7 +7,8 @@ export default {
       "accent": "#DD8F47",
       "base": "#FFFCF3",
       "white": "#FFFFFF",
-      "gray": "#CCCCCC"
+      "gray": "#CCCCCC",
+      "red" : "#FF0000"
     },
     extend: {},
   },
