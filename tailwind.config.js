@@ -8,6 +8,7 @@ export default {
       base: '#FFFCF3',
       white: '#FFFFFF',
       gray: '#CCCCCC',
+      red: '#FF0000',
     },
     fontSize: {
       xs: '12px',
