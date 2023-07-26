@@ -9,16 +9,20 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint src --fix --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write 'src/**/*.tsx'",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate:api": "npx openapi-typescript swagger.yml --output types/schema.gen.ts"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
     "eslint-config-prettier": "^8.8.0",
+    "openapi-typescript": "^6.3.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^4.10.1",
     "react-router-dom": "^6.14.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.0.2",
     "@types/react": "^18.0.37",
     "@types/react-dom": "^18.0.11",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
