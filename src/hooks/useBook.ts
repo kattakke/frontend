@@ -30,6 +30,6 @@ export const useBook = (bookId: string): Book => {
 }
 
 export const useBooks = (): Book[] => {
-  const num = fakerJA.number.int({ min: 0, max: 10 })
-  return Array(num).map((_) => mockBook())
+  const num = fakerJA.number.int({ min: 3, max: 10 })
+  return [...Array(num)].map(_ => mockBook())
 }

@@ -1,7 +1,21 @@
-import React from "react";
+import React from 'react'
+import BookDetail from '../components/BookDetail'
+import { useBooks } from '../hooks/useBook'
 
 const Search = () => {
-    return <div></div>
+  const books = useBooks()
+
+  console.log(books)
+
+  return (
+    <div>
+      <div className='grid grid-cols-2 gap-4'>
+        {books.map((book) => (
+          <BookDetail imagePath="" title={book.title} author={book.author} />
+        ))}
+      </div>
+    </div>
+  )
 }
 
 export default Search
