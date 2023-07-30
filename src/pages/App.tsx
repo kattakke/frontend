@@ -1,5 +1,6 @@
 import React from "react"
 import Button from "../components/Button"
+import { Link } from 'react-router-dom'
 
 const Top = () => {
   return (
@@ -17,9 +18,9 @@ const Top = () => {
             </div>
           </div>
         </div>
-        <div className="px-4 mt-auto">
-         <Button className='w-full'>ログイン画面へ</Button>
-        </div>
+        <Link to={"/login"} className="px-4 mt-auto">
+          <Button className='w-full'>ログイン画面へ</Button>
+        </Link>
       </div>
     </>
   )
