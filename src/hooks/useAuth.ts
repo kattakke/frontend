@@ -2,7 +2,7 @@ import { fakerJA } from '@faker-js/faker'
 import { User } from '../types'
 
 const mockUser = (userId: string = fakerJA.string.uuid()): User => {
-  const user = {}
+  const user = { userId: userId }
   return user
 }
 
