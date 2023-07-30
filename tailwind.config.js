@@ -16,7 +16,11 @@ export default {
       md: '16px',
       lg: '18px',
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'book-shelf': "url('/public/book-shelf.svg')"
+      },
+    },
   },
   plugins: [],
 }
