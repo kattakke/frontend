@@ -18,7 +18,7 @@ export default {
     },
     extend: {
       backgroundImage: {
-        'book-shelf': "url('/public/book-shelf.svg')"
+        'book-shelf': "url('/book-shelf.jpg')"
       },
     },
   },
