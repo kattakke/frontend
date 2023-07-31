@@ -18,7 +18,6 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <BrowserRouter>
       <Routes>
         <Route element={<MainLayout />}>
-          <Route index element={<Top />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/detail" element={<Detail />} />
@@ -29,6 +28,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           {/* TODO: デプロイ前に消す */}
           <Route path="/sample" element={<Sample />} />
         </Route>
+
+        <Route index element={<Top />} />
 
         <Route path="*" element={<NotFound />} />
       </Routes>

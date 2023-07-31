@@ -25,6 +25,11 @@ export default {
         'header-button': '40',
       },
     },
+    extend: {
+      backgroundImage: {
+        'book-shelf': "url('/book-shelf.jpg')"
+      },
+    },
   },
   plugins: [],
 }
