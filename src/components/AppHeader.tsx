@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { HiOutlinePlus, HiOutlineSearch } from 'react-icons/hi'
+import { HiOutlineLogout, HiOutlinePlus, HiOutlineSearch } from 'react-icons/hi'
 import { RxCross2, RxHamburgerMenu } from 'react-icons/rx'
 import { Link } from 'react-router-dom'
 
@@ -26,14 +26,26 @@ const AppHeader = () => {
       >
         <p className="text-xl">かったっけ</p>
         <div className="flex flex-col space-y-6 mt-8">
-          <Link to="/search" className="flex items-center space-x-2 w-fit" onClick={()=>setOpen(false)}>
+          <Link
+            to="/search"
+            className="flex items-center space-x-2 w-fit"
+            onClick={() => setOpen(false)}
+          >
             <HiOutlineSearch className="h-6 w-6" />
-            <p className='text-lg'>本を検索</p>
+            <p className="text-lg">本を検索</p>
           </Link>
-          <Link to="/register" className="flex items-center space-x-2 w-fit" onClick={() => setOpen(false)}>
+          <Link
+            to="/register"
+            className="flex items-center space-x-2 w-fit"
+            onClick={() => setOpen(false)}
+          >
             <HiOutlinePlus className="h-6 w-6" />
-            <p className='text-lg'>本を登録</p>
+            <p className="text-lg">本を登録</p>
           </Link>
+          <div className="flex items-center space-x-2 w-fit">
+            <HiOutlineLogout className="h-6 w-6" />
+            <p className="text-lg">ログアウト</p>
+          </div>
         </div>
       </div>
       {open && (
