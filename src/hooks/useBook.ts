@@ -2,7 +2,7 @@ import { fakerJA } from '@faker-js/faker'
 import useSWR from 'swr'
 import { Book } from '../types'
 import { formatDate } from '../util/date'
-import { fetcher } from '../util/fetcher'
+import { getFetcher } from '../util/fetcher'
 
 const range = (digit: number): { min: number; max: number } => {
   return { min: 10 ** (digit - 1), max: 10 ** digit - 1 }
@@ -35,8 +35,8 @@ export const useBook = (
     return { data: mockBook(bookId), error: null, isLoading: false }
   } else {
     const { data, error, isLoading } = useSWR<Book, Error>(
-      `/books/${bookId}`,
-      fetcher
+      { url: `/books/${bookId}` },
+      getFetcher
     )
     return { data, error, isLoading }
   }
@@ -53,7 +53,7 @@ export const useBooks = (
     })
   } else {
     const datas = [...Array(bookIds.length)].map((bookId) =>
-      useSWR<Book, Error>(`/books/${bookId}`, fetcher)
+      useSWR<Book, Error>({ url: `/books/${bookId}` }, getFetcher)
     )
     return datas
   }

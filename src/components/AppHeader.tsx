@@ -2,9 +2,11 @@ import React, { useState } from 'react'
 import { HiOutlineLogout, HiOutlinePlus, HiOutlineSearch } from 'react-icons/hi'
 import { RxCross2, RxHamburgerMenu } from 'react-icons/rx'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
 const AppHeader = () => {
   const [open, setOpen] = useState(false)
+  const { logout } = useAuth()
 
   return (
     <div className="h-20 flex items-center justify-between text-white px-5">

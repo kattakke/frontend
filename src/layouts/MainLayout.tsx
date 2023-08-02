@@ -1,5 +1,5 @@
 import React from 'react'
-import { Navigate, Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import AppHeader from '../components/AppHeader'
 import { useAuth } from '../hooks/useAuth'
 

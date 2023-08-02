@@ -2,7 +2,7 @@ import { fakerJA } from '@faker-js/faker'
 import useSWR from 'swr'
 import { Shelf } from '../types'
 import { formatDate } from '../util/date'
-import { fetcher } from '../util/fetcher'
+import { getFetcher } from '../util/fetcher'
 
 const mockShelf = (userId: string = fakerJA.string.uuid()): Shelf => {
   const date = fakerJA.date.past()
@@ -22,6 +22,6 @@ export const useShelf = (
   if (import.meta.env.VITE_MOCK) {
     return { data: mockShelf(userId), error: null, isLoading: false }
   } else {
-    return useSWR<Shelf, Error>(`/users/${userId}/shelf`, fetcher)
+    return useSWR<Shelf, Error>({ url: `/users/${userId}/shelf` }, getFetcher)
   }
 }
