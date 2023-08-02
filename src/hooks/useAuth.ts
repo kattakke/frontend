@@ -7,7 +7,11 @@ const mockUser = (userId: string = fakerJA.string.uuid()): User => {
 }
 
 export const useUser = (userId: string | undefined): User => {
-  // userId が undefined なら /auth/me を叩く
 
   return mockUser(userId)
+}
+
+export const useAuth = (): { isAuth: boolean } => {
+  const isAuth = false
+  return { isAuth }
 }

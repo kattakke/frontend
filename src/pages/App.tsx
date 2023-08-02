@@ -1,29 +1,38 @@
-import React from "react"
-import Button from "../components/Button"
-import { Link } from 'react-router-dom'
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom'
+import MainLayout from '../layouts/MainLayout'
+import Top from './Top'
+import Detail from './Detail'
+import Home from './Home'
+import Login from './Login'
+import NotFound from './NotFound'
+import Register from './Register'
+import Sample from './Sample'
+import Search from './Search'
+import Setting from './Setting'
+import '../index.css'
 
-const Top = () => {
+const App = () => {
   return (
-    <>
-      <div className="flex flex-col bg-book-shelf bg-cover bg-top h-screen w-screen py-4">
-        <div className="h-2/3 flex">
-          <div className="bg-white bg-opacity-80 rounded-2xl px-6 py-8 shadow-md mx-4 mt-auto mb-10 w-full">
-            <div className="flex flex-col items-center">
-              <div className="flex justify-start w-full">
-                <img src="/logo.png" alt="logo" className="h-10 w-10" />
-              </div>
-              <div className="px-10 pt-6 pb-10 h-30">
-                <p className="text-main text-lg"><span className="text-accent">「かったっけ」</span>はあなたの本棚を管理するアプリ。登録した本をいつでもどこでも確認できます。</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <Link to={"/login"} className="px-4 mt-auto">
-          <Button className='w-full'>ログイン画面へ</Button>
-        </Link>
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/detail" element={<Detail />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/setting" element={<Setting />} />
+
+          {/* TODO: デプロイ前に消す */}
+          <Route path="/sample" element={<Sample />} />
+        </Route>
+
+        <Route index element={<Top />} />
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
-export default Top
+export default App
