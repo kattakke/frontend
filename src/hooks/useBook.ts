@@ -1,6 +1,8 @@
 import { fakerJA } from '@faker-js/faker'
+import useSWR from 'swr'
 import { Book } from '../types'
 import { formatDate } from '../util/date'
+import { getFetcher } from '../util/fetcher'
 
 const range = (digit: number): { min: number; max: number } => {
   return { min: 10 ** (digit - 1), max: 10 ** digit - 1 }
@@ -25,11 +27,34 @@ const mockBook = (bookId: string = fakerJA.string.uuid()): Book => {
   return book
 }
 
-export const useBook = (bookId: string): Book => {
-  return mockBook(bookId)
+export const useBook = (
+  bookId: string
+): { data: Book; error: Error; isLoading: boolean } => {
+  // TODO: delete mock
+  if (import.meta.env.VITE_MOCK) {
+    return { data: mockBook(bookId), error: null, isLoading: false }
+  } else {
+    const { data, error, isLoading } = useSWR<Book, Error>(
+      { url: `/books/${bookId}` },
+      getFetcher
+    )
+    return { data, error, isLoading }
+  }
 }
 
-export const useBooks = (): Book[] => {
-  const num = fakerJA.number.int({ min: 3, max: 10 })
-  return [...Array(num)].map(_ => mockBook())
+export const useBooks = (
+  bookIds: string[]
+): { data: Book; error: Error; isLoading: boolean }[] => {
+  // TODO: delete mock
+  if (import.meta.env.VITE_MOCK) {
+    const num = fakerJA.number.int({ min: 3, max: 10 })
+    return [...Array(num)].map((_) => {
+      return { data: mockBook(), error: null, isLoading: false }
+    })
+  } else {
+    const datas = [...Array(bookIds.length)].map((bookId) =>
+      useSWR<Book, Error>({ url: `/books/${bookId}` }, getFetcher)
+    )
+    return datas
+  }
 }

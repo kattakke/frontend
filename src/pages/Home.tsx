@@ -2,7 +2,7 @@ import React from 'react'
 import { useBook } from '../hooks/useBook'
 
 const Home = () => {
-  const book = useBook('')
+  const {data: book} = useBook('')
 
   return (
     <div>
