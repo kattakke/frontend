@@ -29,7 +29,12 @@ export const useProvideAuth = () => {
       { url: '/auth/login', params: { id: email, password: password } },
       getFetcher
     )
-    if (error) return
+    if (error) {
+      throw error
+    }
+    
+    // call setIsAuth(true)
+    // set localStrage
   }
 
   const signup = (email: string, password: string) => {
@@ -37,16 +42,38 @@ export const useProvideAuth = () => {
       { url: '/users', params: { id: email, password: password } },
       postFetcher
     )
-    if (error) return
+    if (error) {
+      throw error
+    }
+
+    // call setIsAuth(true)
+    // set localStrage
   }
 
   const logout = () => {
-    const {data,error,isLoading} = useSWR(
-      {url: "/auth/logout"},
+    const { data, error, isLoading } = useSWR(
+      { url: '/auth/logout' },
       patchFetcher
     )
+    if (error) {
+      throw error
+    }
+
+    // call setIsAuth(false)
+    // delete localStrage
   }
-  const autoLogin = () => {}
+
+  const autoLogin = () => {
+
+    // read localStrage
+
+    const { data, error, isLoading } = useSWR({ url: '/auth/me' }, getFetcher)
+    if (error) {
+      throw error
+    }
+
+    // call setIsAuth(true)
+  }
 
   return { isAuth, login, signup, logout, autoLogin }
 }

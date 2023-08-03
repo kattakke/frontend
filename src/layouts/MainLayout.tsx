@@ -4,7 +4,11 @@ import AppHeader from '../components/AppHeader'
 import { useAuth } from '../hooks/useAuth'
 
 const MainLayout = () => {
-  const { isAuth } = useAuth()
+  const { isAuth, autoLogin } = useAuth()
+
+  // token が期限切れでなければ認証する
+  // autoLogin()
+
   const location = useLocation()
   const isOnLoginPage = location.pathname == '/login'
 
