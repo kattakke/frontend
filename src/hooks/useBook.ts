@@ -11,7 +11,7 @@ const range = (digit: number): { min: number; max: number } => {
 const mockBook = (bookId: string = fakerJA.string.uuid()): Book => {
   const date = fakerJA.date.past()
   const book: Book = {
-    bookdId: bookId,
+    bookId: bookId,
     isbn: [
       fakerJA.number.int(range(3)),
       fakerJA.number.int(range(1)),

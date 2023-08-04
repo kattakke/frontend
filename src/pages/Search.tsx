@@ -5,9 +5,7 @@ import TextField from '../components/TextField'
 import { useBooks } from '../hooks/useBook'
 
 const Search = () => {
-  const books = useBooks()
-
-  console.log(books)
+  const datas = useBooks([])
 
   return (
     <div>
@@ -19,8 +17,12 @@ const Search = () => {
         <p>タグ検索とかジャンル検索とか</p>
       </div>
       <div className="grid grid-cols-2 gap-4 mt-8">
-        {books.map((book) => (
-          <BookDetail imagePath={undefined} title={book.title} author={book.author} />
+        {datas.map((book) => (
+          <BookDetail
+            imagePath={undefined}
+            title={book.data.title}
+            author={book.data.author}
+          />
         ))}
       </div>
     </div>
