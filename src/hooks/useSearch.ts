@@ -35,19 +35,19 @@ export const useSearch: (filter: Filter) => Book[] = ({
     author ? `author:${author}` : '',
     isbn ? `isbn:${isbn}` : '',
   ]
-  console.log(query.join('+'))
   const {
     data: rawBooks,
     error,
     isLoading,
   } = useSWR<Object[], Error>(query, googleFetcher)
-  console.log(rawBooks)
+
   if (!rawBooks) return []
+  
   const books = rawBooks.map((rawBook) => {
     return {
       bookId: crypto.randomUUID().toString(),
       title: rawBook['volumeInfo']['title'],
-      author: rawBook['volumeInfo']['authors'].join(', '),
+      author: rawBook['volumeInfo']['authors']?.join(', '),
     }
   })
   return books
