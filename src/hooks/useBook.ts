@@ -4,6 +4,7 @@ import { Book } from '../types'
 import { formatDate } from '../util/date'
 import { getFetcher } from '../util/fetcher'
 
+
 const range = (digit: number): { min: number; max: number } => {
   return { min: 10 ** (digit - 1), max: 10 ** digit - 1 }
 }
@@ -32,6 +33,7 @@ export const useBook = (
 ): { data: Book; error: Error; isLoading: boolean } => {
   // TODO: delete mock
   if (import.meta.env.VITE_MOCK) {
+    fakerJA.seed(12345)
     return { data: mockBook(bookId), error: null, isLoading: false }
   } else {
     const { data, error, isLoading } = useSWR<Book, Error>(
@@ -47,6 +49,7 @@ export const useBooks = (
 ): { data: Book; error: Error; isLoading: boolean }[] => {
   // TODO: delete mock
   if (import.meta.env.VITE_MOCK) {
+    fakerJA.seed(12345)
     const num = fakerJA.number.int({ min: 3, max: 10 })
     return [...Array(num)].map((_) => {
       return { data: mockBook(), error: null, isLoading: false }
