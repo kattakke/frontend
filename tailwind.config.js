@@ -24,8 +24,6 @@ export default {
         header: '30',
         'header-button': '40',
       },
-    },
-    extend: {
       backgroundImage: {
         'book-shelf': "url('/book-shelf.jpg')"
       },

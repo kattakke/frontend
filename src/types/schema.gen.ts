@@ -103,7 +103,7 @@ export interface components {
   schemas: {
     Book: {
       /** Format: UUID */
-      bookdId?: string;
+      bookId?: string;
       isbn?: string | null;
       title?: string;
       author?: string | null;
