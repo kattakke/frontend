@@ -10,6 +10,8 @@ const Register = () => {
   const [isCameraOn, setIsCameraOn] = useState(false)
   const books = useSearch({ title, author, isbn })
 
+  const onAddBook = () => {}
+
   return (
     <div className="pt-3">
       <div className="bg-white rounded-3xl px-5 py-8 flex-col items-center justify-center shadow-md space-y-6 relative">
@@ -57,11 +59,19 @@ const Register = () => {
             </div>
           </div> */}
         </div>
-        <div>
+        <div className="flex flex-col space-y-2">
           {books.map((book) => (
-            <div key={book.bookId}>
-              <p>{book.title}</p>
-              <p>{book.author}</p>
+            <div key={book.bookId} className="flex justify-between space-x-2">
+              <div>
+                <p className="text-md">{book.title}</p>
+                <p className="text-sm">{book.author}</p>
+              </div>
+              <Button
+                className="w-20 shrink-0 grow-0"
+                onClick={() => onAddBook()}
+              >
+                追加
+              </Button>
             </div>
           ))}
         </div>
@@ -74,7 +84,6 @@ const Register = () => {
           >
             バーコードから自動入力
           </Button>
-          <Button className="w-full">追加</Button>
         </div>
 
         {/* 後でコメントイン */}

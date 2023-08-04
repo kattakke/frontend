@@ -9,13 +9,20 @@ type Filter = {
 }
 
 const googleFetcher: Fetcher<Object[], string[]> = async (query: string[]) => {
-  if (query.length == 0) {
+  if (query.join('') == '') {
     return []
   }
   const res = await axios.get(import.meta.env.VITE_GOOGLE_BOOKS_API_URL, {
     params: { q: query.join('+') },
   })
-  return res.data["items"]
+  return res.data['items']
+
+  //   サンプルデータ
+  // return [
+  //     { volumeInfo: { title: 'ハリー・ポッターと死の秘宝 Part.1', authors: 'J.K.ローリング' } },
+  //     { volumeInfo: { title: '大学入試　最短でマスターする数学A・B・C', authors: '稲荷誠' } },
+  //     { volumeInfo: { title: '君の名は', authors: '新海誠' } },
+  // ]
 }
 
 export const useSearch: (filter: Filter) => Book[] = ({
@@ -23,7 +30,12 @@ export const useSearch: (filter: Filter) => Book[] = ({
   author,
   isbn,
 }) => {
-  const query = [...title, author, `isbn:${isbn}`]
+  const query = [
+    ...title,
+    author ? `author:${author}` : '',
+    isbn ? `isbn:${isbn}` : '',
+  ]
+  console.log(query.join('+'))
   const {
     data: rawBooks,
     error,
@@ -35,7 +47,7 @@ export const useSearch: (filter: Filter) => Book[] = ({
     return {
       bookId: crypto.randomUUID().toString(),
       title: rawBook['volumeInfo']['title'],
-      author: rawBook['volumeInfo']['authors'],
+      author: rawBook['volumeInfo']['authors'].join(', '),
     }
   })
   return books
