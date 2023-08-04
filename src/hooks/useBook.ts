@@ -4,7 +4,6 @@ import { Book } from '../types'
 import { formatDate } from '../util/date'
 import { getFetcher } from '../util/fetcher'
 
-
 const range = (digit: number): { min: number; max: number } => {
   return { min: 10 ** (digit - 1), max: 10 ** digit - 1 }
 }
@@ -45,7 +44,8 @@ export const useBook = (
 }
 
 export const useBooks = (
-  bookIds: string[]
+  bookIds: string[],
+  sort?: 'asc' | 'desc'
 ): { data: Book; error: Error; isLoading: boolean }[] => {
   // TODO: delete mock
   if (import.meta.env.VITE_MOCK) {
@@ -58,6 +58,15 @@ export const useBooks = (
     const datas = [...Array(bookIds.length)].map((bookId) =>
       useSWR<Book, Error>({ url: `/books/${bookId}` }, getFetcher)
     )
+    if (sort == 'asc') {
+      datas.sort(
+        (a, b) => Date.parse(a.data.createdAt) - Date.parse(b.data.createdAt)
+      )
+    } else if (sort == 'desc') {
+      datas.sort(
+        (a, b) => Date.parse(b.data.createdAt) - Date.parse(a.data.createdAt)
+      )
+    }
     return datas
   }
 }
