@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
 import { useSearch } from '../hooks/useSearch'
@@ -27,16 +28,6 @@ const Register = () => {
           </div>
         </div>
         <div className="flex-col space-y-1">
-          <p className="font-light text-sm">ISBN</p>
-          <div className="flex">
-            <TextField
-              className="flex-auto font-medium"
-              type="text"
-              onChange={(e) => setIsbn(e.target.value)}
-            ></TextField>
-          </div>
-        </div>
-        <div className="flex-col space-y-1">
           <p className="font-light text-sm">著者名</p>
           <div className="flex">
             <TextField
@@ -46,7 +37,27 @@ const Register = () => {
               onChange={(e) => setAuthor(e.target.value)}
             ></TextField>
           </div>
-          {/* <div className="w-1/2 pl-2">
+        </div>
+        <div className="flex-col space-y-1">
+          <p className="font-light text-sm">ISBN</p>
+          <div className="flex">
+            <TextField
+              className="flex-auto font-medium"
+              type="text"
+              onChange={(e) => setIsbn(e.target.value)}
+            ></TextField>
+          </div>
+        </div>
+        <div>
+          <Button
+            className="w-full mb-3"
+            color="accent"
+            onClick={() => setIsCameraOn(true)}
+          >
+            バーコードから自動入力
+          </Button>
+        </div>
+        {/* <div className="w-1/2 pl-2">
             <div className="flex-col space-y-1 w-full">
               <p className="font-light text-sm">出版社名</p>
               <div className="flex">
@@ -58,32 +69,20 @@ const Register = () => {
               </div>
             </div>
           </div> */}
-        </div>
-        <div className="flex flex-col space-y-2">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-12 mt-8">
           {books.map((book) => (
-            <div key={book.bookId} className="flex justify-between space-x-2">
-              <div>
-                <p className="text-md">{book.title}</p>
-                <p className="text-sm">{book.author}</p>
-              </div>
-              <Button
-                className="w-20 shrink-0 grow-0"
-                onClick={() => onAddBook()}
-              >
+            <div key={book.bookId} className="flex flex-col justify-between">
+              <BookDetail
+                id={book.bookId}
+                title={book.title}
+                author={book.author}
+                imagePath={book.imagePath}
+              />
+              <Button className="w-full mt-2" onClick={() => onAddBook()}>
                 追加
               </Button>
             </div>
           ))}
-        </div>
-
-        <div className="pt-8">
-          <Button
-            className="w-full mb-3"
-            color="accent"
-            onClick={() => setIsCameraOn(true)}
-          >
-            バーコードから自動入力
-          </Button>
         </div>
 
         {/* 後でコメントイン */}

@@ -42,12 +42,13 @@ export const useSearch: (filter: Filter) => Book[] = ({
   } = useSWR<Object[], Error>(query, googleFetcher)
 
   if (!rawBooks) return []
-  
+
   const books = rawBooks.map((rawBook) => {
     return {
       bookId: crypto.randomUUID().toString(),
       title: rawBook['volumeInfo']['title'],
       author: rawBook['volumeInfo']['authors']?.join(', '),
+      imagePath: rawBook['volumeInfo']?.['imageLinks']?.['smallThumbnail'],
     }
   })
   return books

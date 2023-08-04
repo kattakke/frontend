@@ -107,6 +107,7 @@ export interface components {
       isbn?: string | null;
       title?: string;
       author?: string | null;
+      imagePath?: string;
       /** Format: date-time */
       createdAt?: string;
       /** Format: date-time */
