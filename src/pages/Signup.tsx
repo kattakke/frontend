@@ -51,7 +51,9 @@ const Signup = () => {
             ></TextField>
           </div>
         </div>
-        <Button className="w-full">登録</Button>
+        <div className='flex pb-5 items-center justify-center'>
+          <Button>登録</Button>
+        </div>
       </div>
     </div>
   )
