@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
+import { type FC, useState } from 'react'
 import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
 import { useSearch } from '../hooks/useSearch'
 
-const Register = () => {
-  const [title, setTitle] = useState([])
+const Register: FC = () => {
+  const [title, setTitle] = useState<string[]>([])
   const [author, setAuthor] = useState('')
   const [isbn, setIsbn] = useState('')
-  const [isCameraOn, setIsCameraOn] = useState(false)
+  const [, setIsCameraOn] = useState(false)
   const books = useSearch({ title, author, isbn })
 
-  const onAddBook = () => {}
+  const onAddBook = (): void => {}
 
   return (
     <div className="pt-3">
@@ -23,7 +23,9 @@ const Register = () => {
             <TextField
               className="flex-auto font-medium"
               type="text"
-              onChange={(e) => { setTitle(e.target.value.split(/\s/)); }}
+              onChange={(e) => {
+                setTitle(e.target.value.split(/\s/))
+              }}
             ></TextField>
           </div>
         </div>
@@ -34,7 +36,9 @@ const Register = () => {
               className="w-full flex-auto font-medium"
               placeholder=""
               type="text"
-              onChange={(e) => { setAuthor(e.target.value); }}
+              onChange={(e) => {
+                setAuthor(e.target.value)
+              }}
             ></TextField>
           </div>
         </div>
@@ -44,7 +48,9 @@ const Register = () => {
             <TextField
               className="flex-auto font-medium"
               type="text"
-              onChange={(e) => { setIsbn(e.target.value); }}
+              onChange={(e) => {
+                setIsbn(e.target.value)
+              }}
             ></TextField>
           </div>
         </div>
@@ -52,7 +58,9 @@ const Register = () => {
           <Button
             className="mb-3 w-full"
             color="accent"
-            onClick={() => { setIsCameraOn(true); }}
+            onClick={() => {
+              setIsCameraOn(true)
+            }}
           >
             バーコードから自動入力
           </Button>
@@ -78,7 +86,12 @@ const Register = () => {
                 author={book.author}
                 imagePath={book.imagePath}
               />
-              <Button className="mt-2 w-full" onClick={() => { onAddBook(); }}>
+              <Button
+                className="mt-2 w-full"
+                onClick={() => {
+                  onAddBook()
+                }}
+              >
                 追加
               </Button>
             </div>

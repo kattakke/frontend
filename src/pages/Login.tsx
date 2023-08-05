@@ -1,16 +1,16 @@
-import React, { useState } from 'react'
+import { type FC, useState } from 'react'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
-import { useAuth } from '../hooks/useAuth'
+// import { useAuth } from '../hooks/useAuth'
 
-const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const { login } = useAuth()
+const Login: FC = () => {
+  const [email] = useState('')
+  const [password] = useState('')
+  // const { login } = useAuth()
 
-  const submitLogin = () => {
-    login(email, password).then(() => {})
-  }
+  // const submitLogin = (): void => {
+  //   login(email, password).then(() => {})
+  // }
 
   return (
     <div className="py-32">

@@ -1,22 +1,17 @@
-import type React from 'react'
+import { type FC } from 'react'
 import Image from './Image'
 import { Link } from 'react-router-dom'
 
 interface Props {
-  id: string
+  id?: string
   imagePath?: string
-  title: string
-  author: string
+  title?: string
+  author?: string | null
   className?: string
 }
 
-const BookDetail: React.FC<Props> = ({
-  id,
-  imagePath,
-  title,
-  author,
-  className,
-}) => {
+const BookDetail: FC<Props> = ({ id, imagePath, title, author, className }) => {
+  if (id === undefined) return null
   return (
     <Link
       to={`/detail/${id}`}

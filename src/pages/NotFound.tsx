@@ -1,7 +1,7 @@
-import React from 'react'
+import { type FC } from 'react'
 
-const NotFound = () => {
-  return <div>this page doesn't exist</div>
+const NotFound: FC = () => {
+  return <div>this page does not exist</div>
 }
 
 export default NotFound

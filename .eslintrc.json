@@ -17,5 +17,10 @@
     "project": "./tsconfig.eslint.json"
   },
   "plugins": ["react", "tailwindcss"],
-  "rules": {}
+  "rules": {},
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }

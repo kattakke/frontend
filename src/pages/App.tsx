@@ -1,4 +1,4 @@
-import React from 'react'
+import { type FC } from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '../context/AuthProvider'
 import '../index.css'
@@ -12,7 +12,7 @@ import Search from './Search'
 import Setting from './Setting'
 import Top from './Top'
 
-const App = () => {
+const App: FC = () => {
   return (
     <BrowserRouter>
       <AuthProvider>

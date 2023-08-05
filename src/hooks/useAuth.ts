@@ -1,9 +1,17 @@
+import { useCallback, useContext, useState } from 'react'
 import { fakerJA } from '@faker-js/faker'
-import { useContext, useState } from 'react'
 import useSWR from 'swr'
 import { AuthContext } from '../context/AuthProvider'
 import { type User } from '../types'
 import { getFetcher, patchFetcher, postFetcher } from '../util/fetcher'
+
+export interface Auth {
+  isAuth: boolean
+  login: (email: string, password: string) => void
+  signup: (email: string, password: string) => void
+  logout: () => void
+  autoLogin: () => void
+}
 
 const mockUser = (userId: string = fakerJA.string.uuid()): User => {
   const user = { userId }
@@ -18,13 +26,14 @@ export const useUser = (userId: string): User => {
   }
 }
 
-export const useAuth = () => {
+export const useAuth = (): Auth => {
   return useContext(AuthContext)
 }
 
-export const useProvideAuth = () => {
+export const useProvideAuth = (): Auth => {
   const [isAuth, setIsAuth] = useState(false)
-  const login = (email: string, password: string) => {
+
+  const login: Auth['login'] = useCallback((email, password) => {
     const { data, error, isLoading } = useSWR(
       { url: '/auth/login', params: { id: email, password } },
       getFetcher
@@ -32,12 +41,12 @@ export const useProvideAuth = () => {
     if (error) {
       throw error
     }
-    
+
     // call setIsAuth(true)
     // set localStrage
-  }
+  }, [])
 
-  const signup = (email: string, password: string) => {
+  const signup: Auth['signup'] = (email, password) => {
     const { data, error, isLoading } = useSWR(
       { url: '/users', params: { id: email, password } },
       postFetcher
@@ -50,7 +59,7 @@ export const useProvideAuth = () => {
     // set localStrage
   }
 
-  const logout = () => {
+  const logout: Auth['logout'] = () => {
     const { data, error, isLoading } = useSWR(
       { url: '/auth/logout' },
       patchFetcher
@@ -63,8 +72,7 @@ export const useProvideAuth = () => {
     // delete localStrage
   }
 
-  const autoLogin = () => {
-
+  const autoLogin: Auth['autoLogin'] = () => {
     // read localStrage
 
     const { data, error, isLoading } = useSWR({ url: '/auth/me' }, getFetcher)

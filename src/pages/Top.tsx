@@ -1,8 +1,8 @@
-import type React from 'react'
+import { type FC } from 'react'
 import Button from '../components/Button'
 import { Link } from 'react-router-dom'
 
-const Top: React.FC = () => {
+const Top: FC = () => {
   return (
     <>
       <div className="flex h-screen w-screen flex-col bg-book-shelf bg-cover bg-top py-4">

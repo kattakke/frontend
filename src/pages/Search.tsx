@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
+import { type FC, useState } from 'react'
 import { HiOutlineSearch } from 'react-icons/hi'
 import BookDetail from '../components/BookDetail'
 import TextField from '../components/TextField'
 import { useBooks } from '../hooks/useBook'
 
-const Search = () => {
+const Search: FC = () => {
   const [word, setWord] = useState('')
-  const datas = useBooks([])
+  const booksData = useBooks([])
 
   return (
     <div>
       <div className="flex items-center justify-between">
         <TextField
           className="w-full"
-          onChange={(e) => { setWord(e.target.value); }}
+          onChange={(e) => {
+            setWord(e.target.value)
+          }}
         />
         <HiOutlineSearch className="mx-3 h-8 w-8" />
       </div>
@@ -21,9 +23,11 @@ const Search = () => {
         <p>タグ検索とかジャンル検索とか</p>
       </div> */}
       <div className="mt-8 grid grid-cols-2 gap-4">
-        {datas.map(
+        {booksData.map(
           (book) =>
-            (book.data.title + book.data.author).search(word) != -1 && (
+            ((book.data.title ?? '') + (book.data.author ?? '')).search(
+              word
+            ) !== -(-1) && (
               <BookDetail
                 id={book.data.bookId}
                 imagePath={undefined}

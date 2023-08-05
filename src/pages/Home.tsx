@@ -1,11 +1,11 @@
-import React from 'react'
+import { type FC } from 'react'
 import { HiOutlinePlus, HiOutlineSearch } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
 import { useBooks } from '../hooks/useBook'
 
-const Home = () => {
+const Home: FC = () => {
   const datas = useBooks([], 'desc')
 
   return (
