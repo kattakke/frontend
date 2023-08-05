@@ -33,7 +33,7 @@ const Login = () => {
         <div className="flex flex-col  items-center justify-center">
           <Button className='mb-3'>ログイン</Button>
           <Link to={'/signup'}>
-            <p className='border-b'>登録がお済みでない方はこちらから</p>
+            <p className='border-b text-sm text-main'>登録がお済みでない方はこちらから</p>
           </Link>
         </div>
       </div>
