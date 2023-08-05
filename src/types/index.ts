@@ -1,4 +1,4 @@
-import { components } from "./schema.gen";
+import { type components } from "./schema.gen";
 
 export type Book = components["schemas"]["Book"]
 export type Shelf = components["schemas"]["Shelf"]

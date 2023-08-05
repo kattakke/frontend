@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-type ParamsType = {
+interface ParamsType {
     id: string
 }
 

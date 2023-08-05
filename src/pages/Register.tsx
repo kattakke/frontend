@@ -15,44 +15,44 @@ const Register = () => {
 
   return (
     <div className="pt-3">
-      <div className="bg-white rounded-3xl px-5 py-8 flex-col items-center justify-center shadow-md space-y-6 relative">
+      <div className="relative flex-col items-center justify-center space-y-6 rounded-3xl bg-white px-5 py-8 shadow-md">
         <h1 className="text-center text-lg">本棚に本を追加</h1>
         <div className="flex-col space-y-1">
-          <p className="font-light text-sm">本のタイトル</p>
+          <p className="text-sm font-light">本のタイトル</p>
           <div className="flex">
             <TextField
               className="flex-auto font-medium"
               type="text"
-              onChange={(e) => setTitle(e.target.value.split(/\s/))}
+              onChange={(e) => { setTitle(e.target.value.split(/\s/)); }}
             ></TextField>
           </div>
         </div>
         <div className="flex-col space-y-1">
-          <p className="font-light text-sm">著者名</p>
+          <p className="text-sm font-light">著者名</p>
           <div className="flex">
             <TextField
-              className="flex-auto w-full font-medium"
+              className="w-full flex-auto font-medium"
               placeholder=""
               type="text"
-              onChange={(e) => setAuthor(e.target.value)}
+              onChange={(e) => { setAuthor(e.target.value); }}
             ></TextField>
           </div>
         </div>
         <div className="flex-col space-y-1">
-          <p className="font-light text-sm">ISBN</p>
+          <p className="text-sm font-light">ISBN</p>
           <div className="flex">
             <TextField
               className="flex-auto font-medium"
               type="text"
-              onChange={(e) => setIsbn(e.target.value)}
+              onChange={(e) => { setIsbn(e.target.value); }}
             ></TextField>
           </div>
         </div>
         <div>
           <Button
-            className="w-full mb-3"
+            className="mb-3 w-full"
             color="accent"
-            onClick={() => setIsCameraOn(true)}
+            onClick={() => { setIsCameraOn(true); }}
           >
             バーコードから自動入力
           </Button>
@@ -69,7 +69,7 @@ const Register = () => {
               </div>
             </div>
           </div> */}
-        <div className="grid grid-cols-2 gap-x-4 gap-y-12 mt-8">
+        <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-12">
           {books.map((book) => (
             <div key={book.bookId} className="flex flex-col justify-between">
               <BookDetail
@@ -78,7 +78,7 @@ const Register = () => {
                 author={book.author}
                 imagePath={book.imagePath}
               />
-              <Button className="w-full mt-2" onClick={() => onAddBook()}>
+              <Button className="mt-2 w-full" onClick={() => { onAddBook(); }}>
                 追加
               </Button>
             </div>

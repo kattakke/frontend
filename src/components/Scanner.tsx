@@ -1,8 +1,8 @@
 import Quagga from '@ericblade/quagga2'
-import React, { FC, useEffect, useRef } from 'react'
+import React, { type FC, useEffect, useRef } from 'react'
 import Button from './Button'
 
-type Props = {
+interface Props {
   onDetected?: () => undefined
   className?: string
 }

@@ -2,11 +2,11 @@ import { fakerJA } from '@faker-js/faker'
 import { useContext, useState } from 'react'
 import useSWR from 'swr'
 import { AuthContext } from '../context/AuthProvider'
-import { User } from '../types'
+import { type User } from '../types'
 import { getFetcher, patchFetcher, postFetcher } from '../util/fetcher'
 
 const mockUser = (userId: string = fakerJA.string.uuid()): User => {
-  const user = { userId: userId }
+  const user = { userId }
   return user
 }
 
@@ -26,7 +26,7 @@ export const useProvideAuth = () => {
   const [isAuth, setIsAuth] = useState(false)
   const login = (email: string, password: string) => {
     const { data, error, isLoading } = useSWR(
-      { url: '/auth/login', params: { id: email, password: password } },
+      { url: '/auth/login', params: { id: email, password } },
       getFetcher
     )
     if (error) {
@@ -39,7 +39,7 @@ export const useProvideAuth = () => {
 
   const signup = (email: string, password: string) => {
     const { data, error, isLoading } = useSWR(
-      { url: '/users', params: { id: email, password: password } },
+      { url: '/users', params: { id: email, password } },
       postFetcher
     )
     if (error) {

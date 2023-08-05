@@ -1,7 +1,7 @@
-import React, { FC } from 'react'
+import React, { type FC } from 'react'
 import { CiImageOff } from 'react-icons/ci'
 
-type Props = {
+interface Props {
   src?: string
   alt?: string
   className?: string

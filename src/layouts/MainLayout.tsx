@@ -21,7 +21,7 @@ const MainLayout = () => {
   // }
 
   return (
-    <div className="bg-base min-h-screen">
+    <div className="min-h-screen bg-base">
       <AppHeader />
       <div className="p-4">
         <Outlet />

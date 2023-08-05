@@ -10,8 +10,8 @@ const Home = () => {
 
   return (
     <div>
-      <p className="font-bold text-xl">最近登録した本</p>
-      <div className="grid grid-cols-2 gap-4 mt-8">
+      <p className="text-xl font-bold">最近登録した本</p>
+      <div className="mt-8 grid grid-cols-2 gap-4">
         {datas.slice(0, 4).map((book) => (
           <BookDetail
             id={book.data.bookId}
@@ -25,7 +25,7 @@ const Home = () => {
         <Button
           color="accent"
           gradation={true}
-          className="mt-20 text-white flex items-center px-12 justify-between"
+          className="mt-20 flex items-center justify-between px-12 text-white"
         >
           <p className="text-xl">本棚を検索</p>
           <HiOutlineSearch className="h-8 w-8" />
@@ -35,7 +35,7 @@ const Home = () => {
         <Button
           color="main"
           gradation={true}
-          className="mt-4 text-white flex items-center px-12 justify-between"
+          className="mt-4 flex items-center justify-between px-12 text-white"
         >
           <p className="text-xl">本棚に登録</p>
           <HiOutlinePlus className="h-8 w-8" />

@@ -13,14 +13,14 @@ const Search = () => {
       <div className="flex items-center justify-between">
         <TextField
           className="w-full"
-          onChange={(e) => setWord(e.target.value)}
+          onChange={(e) => { setWord(e.target.value); }}
         />
-        <HiOutlineSearch className="h-8 w-8 mx-3" />
+        <HiOutlineSearch className="mx-3 h-8 w-8" />
       </div>
       {/* <div className="flex items-center justify-center h-20 mt-4 bg-white border">
         <p>タグ検索とかジャンル検索とか</p>
       </div> */}
-      <div className="grid grid-cols-2 gap-4 mt-8">
+      <div className="mt-8 grid grid-cols-2 gap-4">
         {datas.map(
           (book) =>
             (book.data.title + book.data.author).search(word) != -1 && (
