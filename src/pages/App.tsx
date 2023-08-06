@@ -6,6 +6,7 @@ import MainLayout from '../layouts/MainLayout'
 import Detail from './Detail'
 import Home from './Home'
 import Login from './Login'
+import Signup from './Signup'
 import NotFound from './NotFound'
 import Register from './Register'
 import Search from './Search'
@@ -19,6 +20,7 @@ const App: FC = () => {
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/login" element={<Login />} />
+            <Route path='/signup' element={<Signup />}></Route>
             <Route path="/home" element={<Home />} />
             <Route path="/detail/:id" element={<Detail />} />
             <Route path="/register" element={<Register />} />
