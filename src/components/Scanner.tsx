@@ -62,7 +62,7 @@ const Scanner: FC<Props> = ({ onDetected, onVideoOff, className }) => {
   return (
     <div
       className={[
-        'p-4 bg-white w-full overflow-hidden rounded-3xl m-0',
+        'p-4 bg-white rounded-3xl',
         className,
       ].join(' ')}
     >
