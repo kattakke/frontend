@@ -1,13 +1,13 @@
-import { type FC } from 'react'
 import Quagga, {
   type QuaggaJSConfigObject,
   type QuaggaJSResultObject,
 } from '@ericblade/quagga2'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type FC } from 'react'
 import Button from './Button'
 
 interface Props {
-  onDetected?: () => void
+  onDetected?: (code: string) => void
+  onVideoOff?: () => void
   className?: string
 }
 
@@ -31,7 +31,7 @@ const quaggaConfig = (videoElm: Element): QuaggaJSConfigObject => ({
   locate: true,
 })
 
-const Scanner: FC<Props> = ({ onDetected, className }) => {
+const Scanner: FC<Props> = ({ onDetected, onVideoOff, className }) => {
   // TODO: to be video
   const videoRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -40,13 +40,18 @@ const Scanner: FC<Props> = ({ onDetected, className }) => {
       Quagga.start()
     })
     const callback = (res: QuaggaJSResultObject): void => {
-      console.log('completed')
-      console.log(res)
-
-      // 正しい ISBN かどうか確認
+      if (
+        res.codeResult.code === undefined ||
+        res.codeResult.code.toString().slice(0, 3) !== '978'
+      ) {
+        return
+      }
 
       void Quagga.stop()
-      if (onDetected !== undefined) onDetected()
+      if (onDetected !== undefined && onVideoOff !== undefined) {
+        onDetected(res.codeResult.code)
+        onVideoOff()
+      }
     }
     Quagga.onDetected(callback)
     return () => {
@@ -60,7 +65,7 @@ const Scanner: FC<Props> = ({ onDetected, className }) => {
         className,
       ].join(' ')}
     >
-      <Button onClick={onDetected}>閉じる</Button>
+      <Button onClick={onVideoOff}>閉じる</Button>
       <div ref={videoRef}></div>
     </div>
   )

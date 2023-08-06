@@ -1,6 +1,7 @@
-import { type FC, useState } from 'react'
+import { useState, type FC } from 'react'
 import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
+import Scanner from '../components/Scanner'
 import TextField from '../components/TextField'
 import { useSearch } from '../hooks/useSearch'
 
@@ -8,7 +9,7 @@ const Register: FC = () => {
   const [title, setTitle] = useState<string[]>([])
   const [author, setAuthor] = useState('')
   const [isbn, setIsbn] = useState('')
-  const [, setIsCameraOn] = useState(false)
+  const [isCameraOn, setIsCameraOn] = useState(false)
   const books = useSearch({ title, author, isbn })
 
   const onAddBook = (): void => {}
@@ -26,7 +27,7 @@ const Register: FC = () => {
               onChange={(e) => {
                 setTitle(e.target.value.split(/\s/))
               }}
-            ></TextField>
+            />
           </div>
         </div>
         <div className="flex-col space-y-1">
@@ -39,7 +40,7 @@ const Register: FC = () => {
               onChange={(e) => {
                 setAuthor(e.target.value)
               }}
-            ></TextField>
+            />
           </div>
         </div>
         <div className="flex-col space-y-1">
@@ -51,7 +52,8 @@ const Register: FC = () => {
               onChange={(e) => {
                 setIsbn(e.target.value)
               }}
-            ></TextField>
+              value={isbn}
+            />
           </div>
         </div>
         <div>
@@ -98,16 +100,17 @@ const Register: FC = () => {
           ))}
         </div>
 
-        {/* 後でコメントイン */}
-
-        {/* {isCameraOn && (
+        {isCameraOn && (
           <Scanner
-            onDetected={() => {
+            onDetected={(code) => {
+              setIsbn(code)
+            }}
+            onVideoOff={() => {
               setIsCameraOn(false)
             }}
-            className='absolute left-0 right-0 top-0'
+            className="absolute inset-x-0 top-0"
           />
-        )} */}
+        )}
       </div>
     </div>
   )
