@@ -1,6 +1,6 @@
 import { fakerJA } from '@faker-js/faker'
 import useSWR from 'swr'
-import { Book } from '../types'
+import { type Book } from '../types'
 import { formatDate } from '../util/date'
 import { getFetcher } from '../util/fetcher'
 
@@ -11,7 +11,7 @@ const range = (digit: number): { min: number; max: number } => {
 const mockBook = (bookId: string = fakerJA.string.uuid()): Book => {
   const date = fakerJA.date.past()
   const book: Book = {
-    bookId: bookId,
+    bookId,
     isbn: [
       fakerJA.number.int(range(3)),
       fakerJA.number.int(range(1)),
@@ -46,7 +46,7 @@ export const useBook = (
 export const useBooks = (
   bookIds: string[],
   sort?: 'asc' | 'desc'
-): { data: Book; error: Error; isLoading: boolean }[] => {
+): Array<{ data: Book; error: Error; isLoading: boolean }> => {
   // TODO: delete mock
   if (import.meta.env.VITE_MOCK) {
     fakerJA.seed(12345)

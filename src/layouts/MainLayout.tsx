@@ -1,16 +1,16 @@
-import React from 'react'
+import { type FC } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import AppHeader from '../components/AppHeader'
-import { useAuth } from '../hooks/useAuth'
+// import { useAuth } from '../hooks/useAuth'
 
-const MainLayout = () => {
-  const { isAuth, autoLogin } = useAuth()
+const MainLayout: FC = () => {
+  // const { isAuth, autoLogin } = useAuth()
 
   // token が期限切れでなければ認証する
   // autoLogin()
 
-  const location = useLocation()
-  const isOnLoginPage = location.pathname == '/login'
+  // const location = useLocation()
+  // const isOnLoginPage = location.pathname === '/login'
 
   // 認証が実装できしだいコメントイン
 
@@ -21,7 +21,7 @@ const MainLayout = () => {
   // }
 
   return (
-    <div className="bg-base min-h-screen">
+    <div className="min-h-screen bg-base">
       <AppHeader />
       <div className="p-4">
         <Outlet />

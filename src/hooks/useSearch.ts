@@ -1,8 +1,8 @@
 import axios from 'axios'
-import useSWR, { Fetcher } from 'swr'
-import { Book } from '../types'
+import useSWR, { type Fetcher } from 'swr'
+import { type Book } from '../types'
 
-type Filter = {
+interface Filter {
   title: string[]
   author?: string
   isbn?: string
@@ -15,7 +15,7 @@ const googleFetcher: Fetcher<Object[], string[]> = async (query: string[]) => {
   const res = await axios.get(import.meta.env.VITE_GOOGLE_BOOKS_API_URL, {
     params: { q: query.join('+') },
   })
-  return res.data['items']
+  return res.data.items
 
   //   サンプルデータ
   // return [
@@ -41,14 +41,14 @@ export const useSearch: (filter: Filter) => Book[] = ({
     isLoading,
   } = useSWR<Object[], Error>(query, googleFetcher)
 
-  if (!rawBooks) return []
+  if (rawBooks == null) return []
 
   const books = rawBooks.map((rawBook) => {
     return {
       bookId: crypto.randomUUID().toString(),
-      title: rawBook['volumeInfo']['title'],
-      author: rawBook['volumeInfo']['authors']?.join(', '),
-      imagePath: rawBook['volumeInfo']?.['imageLinks']?.['smallThumbnail'],
+      title: rawBook.volumeInfo.title,
+      author: rawBook.volumeInfo.authors?.join(', '),
+      imagePath: rawBook.volumeInfo?.imageLinks?.smallThumbnail,
     }
   })
   return books

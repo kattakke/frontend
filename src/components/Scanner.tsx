@@ -1,53 +1,57 @@
-import Quagga from '@ericblade/quagga2'
-import React, { FC, useEffect, useRef } from 'react'
+import { type FC } from 'react'
+import Quagga, {
+  type QuaggaJSConfigObject,
+  type QuaggaJSResultObject,
+} from '@ericblade/quagga2'
+import { useEffect, useRef } from 'react'
 import Button from './Button'
 
-type Props = {
-  onDetected?: () => undefined
+interface Props {
+  onDetected?: () => void
   className?: string
 }
 
+const quaggaConfig = (videoElm: Element): QuaggaJSConfigObject => ({
+  inputStream: {
+    name: 'Live',
+    type: 'LiveStream',
+    target: videoElm,
+    constraints: {
+      facingMode: 'environment',
+    },
+  },
+  locator: {
+    patchSize: 'medium',
+    halfSample: true,
+  },
+  numOfWorkers: 2,
+  decoder: {
+    readers: ['ean_reader'],
+  },
+  locate: true,
+})
+
 const Scanner: FC<Props> = ({ onDetected, className }) => {
+  // TODO: to be video
   const videoRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    Quagga.init(
-      {
-        inputStream: {
-          name: 'Live',
-          type: 'LiveStream',
-          target: videoRef.current,
-          constraints: {
-            facingMode: 'environment',
-          },
-        },
-        locator: {
-          patchSize: 'medium',
-          halfSample: true,
-        },
-        numOfWorkers: 2,
-        decoder: {
-          readers: ['ean_reader'],
-        },
-        locate: true,
-      },
-      function (err) {
-        if (err) {
-          console.log(err)
-          return
-        }
-        console.log('Initialization finished. Ready to start')
-        Quagga.start()
-      }
-    )
-    Quagga.onDetected((res) => {
+    if (videoRef.current === null) return
+    void Quagga.init(quaggaConfig(videoRef.current)).then(() => {
+      Quagga.start()
+    })
+    const callback = (res: QuaggaJSResultObject): void => {
       console.log('completed')
       console.log(res)
 
       // 正しい ISBN かどうか確認
 
-      Quagga.stop()
-      onDetected()
-    })
+      void Quagga.stop()
+      if (onDetected !== undefined) onDetected()
+    }
+    Quagga.onDetected(callback)
+    return () => {
+      Quagga.offDetected(callback)
+    }
   }, [])
   return (
     <div

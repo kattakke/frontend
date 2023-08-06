@@ -1,23 +1,31 @@
-import React, { useState } from 'react'
+import { type FC, useState } from 'react'
 import { HiOutlineLogout, HiOutlinePlus, HiOutlineSearch } from 'react-icons/hi'
 import { RxCross2, RxHamburgerMenu } from 'react-icons/rx'
 import { Link } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
+// import { useAuth } from '../hooks/useAuth'
 
-const AppHeader = () => {
+const AppHeader: FC = () => {
   const [open, setOpen] = useState(false)
-  const { logout } = useAuth()
+  // const { logout } = useAuth()
 
   return (
-    <div className="h-20 flex items-center justify-between text-white px-5">
+    <div className="flex h-20 items-center justify-between px-5 text-white">
       <img src="/logo.png" alt="logo" className="h-10 w-10" />
       {open ? (
-        <div onClick={() => setOpen(false)}>
-          <RxCross2 className="text-white h-12 w-12 relative z-header-button" />
+        <div
+          onClick={() => {
+            setOpen(false)
+          }}
+        >
+          <RxCross2 className="relative z-header-button h-12 w-12 text-white" />
         </div>
       ) : (
-        <div onClick={() => setOpen(true)}>
-          <RxHamburgerMenu className="text-main h-12 w-12 relative z-header-button" />
+        <div
+          onClick={() => {
+            setOpen(true)
+          }}
+        >
+          <RxHamburgerMenu className="relative z-header-button h-12 w-12 text-main" />
         </div>
       )}
       <div
@@ -27,24 +35,28 @@ const AppHeader = () => {
         ].join(' ')}
       >
         <p className="text-xl">かったっけ</p>
-        <div className="flex flex-col space-y-6 mt-8">
+        <div className="mt-8 flex flex-col space-y-6">
           <Link
             to="/search"
-            className="flex items-center space-x-2 w-fit"
-            onClick={() => setOpen(false)}
+            className="flex w-fit items-center space-x-2"
+            onClick={() => {
+              setOpen(false)
+            }}
           >
             <HiOutlineSearch className="h-6 w-6" />
             <p className="text-lg">本を検索</p>
           </Link>
           <Link
             to="/register"
-            className="flex items-center space-x-2 w-fit"
-            onClick={() => setOpen(false)}
+            className="flex w-fit items-center space-x-2"
+            onClick={() => {
+              setOpen(false)
+            }}
           >
             <HiOutlinePlus className="h-6 w-6" />
             <p className="text-lg">本を登録</p>
           </Link>
-          <div className="flex items-center space-x-2 w-fit">
+          <div className="flex w-fit items-center space-x-2">
             <HiOutlineLogout className="h-6 w-6" />
             <p className="text-lg">ログアウト</p>
           </div>
@@ -52,8 +64,10 @@ const AppHeader = () => {
       </div>
       {open && (
         <div
-          className="absolute top-0 left-0 h-full w-full z-overlay"
-          onClick={() => setOpen(false)}
+          className="absolute left-0 top-0 z-overlay h-full w-full"
+          onClick={() => {
+            setOpen(false)
+          }}
         />
       )}
     </div>

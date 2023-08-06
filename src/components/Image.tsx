@@ -1,22 +1,20 @@
-import React, { FC } from 'react'
+import { type FC } from 'react'
 import { CiImageOff } from 'react-icons/ci'
 
-type Props = {
+interface Props {
   src?: string
   alt?: string
   className?: string
 }
 
 const Image: FC<Props> = ({ src, alt = 'image', className }) => {
-  if (src) {
+  if (src !== undefined) {
     return (
-      <span className='flex justify-center'>
+      <span className="flex justify-center">
         <img
           src={src}
           alt={alt}
-          className={['h-40 shadow-lg', className].join(
-            ' '
-          )}
+          className={['h-40 shadow-lg', className].join(' ')}
         />
       </span>
     )

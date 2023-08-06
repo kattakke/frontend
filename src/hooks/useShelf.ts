@@ -1,6 +1,6 @@
 import { fakerJA } from '@faker-js/faker'
 import useSWR from 'swr'
-import { Shelf } from '../types'
+import { type Shelf } from '../types'
 import { formatDate } from '../util/date'
 import { getFetcher } from '../util/fetcher'
 
