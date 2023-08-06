@@ -1,12 +1,12 @@
 import { type FC } from 'react'
-import TextField from '../components/TextField'
 import Button from '../components/Button'
+import TextField from '../components/TextField'
 
 const Setting: FC = () => {
   return (
     <div className="py-32">
       <div className="flex-col items-center justify-center rounded-3xl bg-white p-8 shadow-md">
-        <h1 className="text-2xl pb-6 text-center">プロフィールを変更</h1>
+        <h1 className="pb-6 text-center text-xl">プロフィールを変更</h1>
         <div className="flex-col space-y-2 pb-6">
           <p className="font-light">名前</p>
           <div className="flex">
