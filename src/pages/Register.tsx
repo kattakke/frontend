@@ -16,7 +16,7 @@ const Register: FC = () => {
 
   return (
     <div className="pt-3">
-      <div className="relative flex-col items-center justify-center space-y-6 rounded-3xl bg-white px-5 py-8 shadow-md">
+      <div className="flex-col items-center justify-center space-y-6 rounded-3xl bg-white px-5 py-8 shadow-md">
         <h1 className="text-center text-lg">本棚に本を追加</h1>
         <div className="flex-col space-y-1">
           <p className="text-sm font-light">本のタイトル</p>
@@ -67,18 +67,6 @@ const Register: FC = () => {
             バーコードから自動入力
           </Button>
         </div>
-        {/* <div className="w-1/2 pl-2">
-            <div className="flex-col space-y-1 w-full">
-              <p className="font-light text-sm">出版社名</p>
-              <div className="flex">
-                <TextField
-                  className="flex-auto  w-full font-medium"
-                  placeholder=""
-                  type="text"
-                ></TextField>
-              </div>
-            </div>
-          </div> */}
         <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-12">
           {books.map((book) => (
             <div key={book.bookId} className="flex flex-col justify-between">
@@ -101,15 +89,23 @@ const Register: FC = () => {
         </div>
 
         {isCameraOn && (
-          <Scanner
-            onDetected={(code) => {
-              setIsbn(code)
-            }}
-            onVideoOff={() => {
-              setIsCameraOn(false)
-            }}
-            className="absolute inset-x-0 top-0"
-          />
+          <>
+            <Scanner
+              onDetected={(code) => {
+                setIsbn(code)
+              }}
+              onVideoOff={() => {
+                setIsCameraOn(false)
+              }}
+              className="absolute inset-0 z-modal !m-auto h-fit w-[95%]"
+            />
+            <div
+              className="absolute left-0 top-0 z-modal-overlay !mt-0 h-screen w-screen bg-gray/50"
+              onClick={() => {
+                setIsCameraOn(false)
+              }}
+            />
+          </>
         )}
       </div>
     </div>

@@ -40,16 +40,17 @@ const Scanner: FC<Props> = ({ onDetected, onVideoOff, className }) => {
       Quagga.start()
     })
     const callback = (res: QuaggaJSResultObject): void => {
+      const code = res.codeResult.code?.toString()
       if (
-        res.codeResult.code === undefined ||
-        res.codeResult.code.toString().slice(0, 3) !== '978'
+        code === undefined ||
+        (code.slice(0, 3) !== '978' && code.slice(0, 3) !== '979') // ISBNコード判定（ISBNは接頭辞が978 or 979）
       ) {
         return
       }
 
       void Quagga.stop()
       if (onDetected !== undefined && onVideoOff !== undefined) {
-        onDetected(res.codeResult.code)
+        onDetected(code)
         onVideoOff()
       }
     }
@@ -61,12 +62,14 @@ const Scanner: FC<Props> = ({ onDetected, onVideoOff, className }) => {
   return (
     <div
       className={[
-        'p-4 bg-white w-full overflow-hidden rounded-md shadow-md',
+        'p-4 bg-white w-full overflow-hidden rounded-3xl m-0',
         className,
       ].join(' ')}
     >
-      <Button onClick={onVideoOff}>閉じる</Button>
-      <div ref={videoRef}></div>
+      <div ref={videoRef} id='barcode' className='shadow-md'></div>
+      <Button onClick={onVideoOff} className="mt-4 w-full">
+        閉じる
+      </Button>
     </div>
   )
 }

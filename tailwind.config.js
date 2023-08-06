@@ -20,12 +20,14 @@ export default {
     },
     extend: {
       zIndex: {
-        overlay: "20",
+        overlay: '20',
         header: '30',
         'header-button': '40',
+        'modal-overlay': '50',
+        modal: '60',
       },
       backgroundImage: {
-        'book-shelf': "url('/book-shelf.jpg')"
+        'book-shelf': "url('/book-shelf.jpg')",
       },
     },
   },

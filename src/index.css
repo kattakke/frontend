@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+#barcode > .drawingBuffer {
+    display: none;
+}
+
+#barcode > video {
+    border-radius: 6px;
+}
