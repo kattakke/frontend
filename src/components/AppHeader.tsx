@@ -1,5 +1,11 @@
-import { type FC, useState } from 'react'
-import { HiOutlineLogout, HiOutlinePlus, HiOutlineSearch } from 'react-icons/hi'
+import { useState, type FC } from 'react'
+import {
+  HiOutlineCog,
+  HiOutlineHome,
+  HiOutlineLogout,
+  HiOutlinePlus,
+  HiOutlineSearch,
+} from 'react-icons/hi'
 import { RxCross2, RxHamburgerMenu } from 'react-icons/rx'
 import { Link } from 'react-router-dom'
 // import { useAuth } from '../hooks/useAuth'
@@ -9,8 +15,10 @@ const AppHeader: FC = () => {
   // const { logout } = useAuth()
 
   return (
-    <div className="flex h-20 items-center justify-between px-5 text-white">
-      <img src="/logo.png" alt="logo" className="h-10 w-10" />
+    <div className="flex h-20 items-center justify-between pl-3 pr-5 text-white">
+      <Link to="/home" className="p-2">
+        <img src="/logo.png" alt="logo" className="h-10 w-10" />
+      </Link>
       {open ? (
         <div
           onClick={() => {
@@ -37,6 +45,16 @@ const AppHeader: FC = () => {
         <p className="text-xl">かったっけ</p>
         <div className="mt-8 flex flex-col space-y-6">
           <Link
+            to="/home"
+            className="flex w-fit items-center space-x-2"
+            onClick={() => {
+              setOpen(false)
+            }}
+          >
+            <HiOutlineHome className="h-6 w-6" />
+            <p className="text-lg">ホーム</p>
+          </Link>
+          <Link
             to="/search"
             className="flex w-fit items-center space-x-2"
             onClick={() => {
@@ -55,6 +73,16 @@ const AppHeader: FC = () => {
           >
             <HiOutlinePlus className="h-6 w-6" />
             <p className="text-lg">本を登録</p>
+          </Link>
+          <Link
+            to="/setting"
+            className="flex w-fit items-center space-x-2"
+            onClick={() => {
+              setOpen(false)
+            }}
+          >
+            <HiOutlineCog className="h-6 w-6" />
+            <p className="text-lg">設定</p>
           </Link>
           <div className="flex w-fit items-center space-x-2">
             <HiOutlineLogout className="h-6 w-6" />
