@@ -1,13 +1,13 @@
-import { type FC } from 'react'
 import Quagga, {
   type QuaggaJSConfigObject,
   type QuaggaJSResultObject,
 } from '@ericblade/quagga2'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type FC } from 'react'
 import Button from './Button'
 
 interface Props {
-  onDetected?: () => void
+  onDetected?: (code: string) => void
+  onVideoOff?: () => void
   className?: string
 }
 
@@ -31,7 +31,7 @@ const quaggaConfig = (videoElm: Element): QuaggaJSConfigObject => ({
   locate: true,
 })
 
-const Scanner: FC<Props> = ({ onDetected, className }) => {
+const Scanner: FC<Props> = ({ onDetected, onVideoOff, className }) => {
   // TODO: to be video
   const videoRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -40,13 +40,19 @@ const Scanner: FC<Props> = ({ onDetected, className }) => {
       Quagga.start()
     })
     const callback = (res: QuaggaJSResultObject): void => {
-      console.log('completed')
-      console.log(res)
-
-      // 正しい ISBN かどうか確認
+      const code = res.codeResult.code?.toString()
+      if (
+        code === undefined ||
+        (code.slice(0, 3) !== '978' && code.slice(0, 3) !== '979') // ISBNコード判定（ISBNは接頭辞が978 or 979）
+      ) {
+        return
+      }
 
       void Quagga.stop()
-      if (onDetected !== undefined) onDetected()
+      if (onDetected !== undefined && onVideoOff !== undefined) {
+        onDetected(code)
+        onVideoOff()
+      }
     }
     Quagga.onDetected(callback)
     return () => {
@@ -56,12 +62,14 @@ const Scanner: FC<Props> = ({ onDetected, className }) => {
   return (
     <div
       className={[
-        'p-4 bg-white w-full overflow-hidden rounded-md shadow-md',
+        'p-4 bg-white rounded-3xl',
         className,
       ].join(' ')}
     >
-      <Button onClick={onDetected}>閉じる</Button>
-      <div ref={videoRef}></div>
+      <div ref={videoRef} id='barcode' className='shadow-md'></div>
+      <Button onClick={onVideoOff} className="mt-4 w-full">
+        閉じる
+      </Button>
     </div>
   )
 }

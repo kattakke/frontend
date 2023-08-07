@@ -1,6 +1,7 @@
-import { type FC, useState } from 'react'
+import { useState, type FC } from 'react'
 import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
+import Scanner from '../components/Scanner'
 import TextField from '../components/TextField'
 import { useSearch } from '../hooks/useSearch'
 
@@ -8,14 +9,14 @@ const Register: FC = () => {
   const [title, setTitle] = useState<string[]>([])
   const [author, setAuthor] = useState('')
   const [isbn, setIsbn] = useState('')
-  const [, setIsCameraOn] = useState(false)
+  const [isCameraOn, setIsCameraOn] = useState(false)
   const books = useSearch({ title, author, isbn })
 
   const onAddBook = (): void => {}
 
   return (
     <div className="pt-3">
-      <div className="relative flex-col items-center justify-center space-y-6 rounded-3xl bg-white px-5 py-8 shadow-md">
+      <div className="flex-col items-center justify-center space-y-6 rounded-3xl bg-white px-5 py-8 shadow-md">
         <h1 className="text-center text-lg">本棚に本を追加</h1>
         <div className="flex-col space-y-1">
           <p className="text-sm font-light">本のタイトル</p>
@@ -26,7 +27,7 @@ const Register: FC = () => {
               onChange={(e) => {
                 setTitle(e.target.value.split(/\s/))
               }}
-            ></TextField>
+            />
           </div>
         </div>
         <div className="flex-col space-y-1">
@@ -39,7 +40,7 @@ const Register: FC = () => {
               onChange={(e) => {
                 setAuthor(e.target.value)
               }}
-            ></TextField>
+            />
           </div>
         </div>
         <div className="flex-col space-y-1">
@@ -51,7 +52,8 @@ const Register: FC = () => {
               onChange={(e) => {
                 setIsbn(e.target.value)
               }}
-            ></TextField>
+              value={isbn}
+            />
           </div>
         </div>
         <div>
@@ -65,18 +67,6 @@ const Register: FC = () => {
             バーコードから自動入力
           </Button>
         </div>
-        {/* <div className="w-1/2 pl-2">
-            <div className="flex-col space-y-1 w-full">
-              <p className="font-light text-sm">出版社名</p>
-              <div className="flex">
-                <TextField
-                  className="flex-auto  w-full font-medium"
-                  placeholder=""
-                  type="text"
-                ></TextField>
-              </div>
-            </div>
-          </div> */}
         <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-12">
           {books.map((book) => (
             <div key={book.bookId} className="flex flex-col justify-between">
@@ -98,16 +88,25 @@ const Register: FC = () => {
           ))}
         </div>
 
-        {/* 後でコメントイン */}
-
-        {/* {isCameraOn && (
-          <Scanner
-            onDetected={() => {
-              setIsCameraOn(false)
-            }}
-            className='absolute left-0 right-0 top-0'
-          />
-        )} */}
+        {isCameraOn && (
+          <>
+            <Scanner
+              onDetected={(code) => {
+                setIsbn(code)
+              }}
+              onVideoOff={() => {
+                setIsCameraOn(false)
+              }}
+              className="absolute inset-0 z-modal !m-auto h-fit w-[95%]"
+            />
+            <div
+              className="absolute left-0 top-0 z-modal-overlay !mt-0 h-screen w-screen bg-gray/50"
+              onClick={() => {
+                setIsCameraOn(false)
+              }}
+            />
+          </>
+        )}
       </div>
     </div>
   )
