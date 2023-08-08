@@ -73,9 +73,6 @@ const Detail: FC = () => {
         </div>
       </div>
       <Alert variant="error" message='予期しないエラーが発生しました' open={open} onOpenChange={setOpen} />
-      <Alert variant="info" message='予期しないエラーが発生しました' open={open} onOpenChange={setOpen} />
-      <Alert variant="success" message='予期しないエラーが発生しました' open={open} onOpenChange={setOpen} />
-      <Alert variant="warning" message='予期しないエラーが発生しました' open={open} onOpenChange={setOpen} />
     </div>
   )
 }
