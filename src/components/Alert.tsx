@@ -48,7 +48,7 @@ const Alert: FC<Props> = ({ variant, message, open, onOpenChange }) => {
           </Toast.Description>
         </div>
       </Toast.Root>
-      <Toast.Viewport className="fixed inset-x-0 bottom-0 z-alert m-4 rounded-md bg-white" />
+      <Toast.Viewport className="fixed inset-x-0 bottom-0 z-alert m-4 rounded-md bg-white shadow-lg" />
     </div>
   )
 }
