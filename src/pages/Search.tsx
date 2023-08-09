@@ -9,7 +9,7 @@ const Search: FC = () => {
   const booksData = useBooks([])
 
   return (
-    <div>
+    <div className='mb-20'>
       <div className="flex items-center justify-between">
         <TextField
           className="w-full"

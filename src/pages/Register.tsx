@@ -16,9 +16,9 @@ const Register: FC = () => {
 
   return (
     <div className="pt-3">
-      <div className="flex-col items-center justify-center space-y-6 rounded-3xl bg-white px-5 py-8 shadow-md">
+      <div className="space-y-6 rounded-3xl bg-white px-5 py-8 mb-20 shadow-md">
         <h1 className="text-center text-lg">本棚に本を追加</h1>
-        <div className="flex-col space-y-1">
+        <div className="space-y-1">
           <p className="text-sm font-light">本のタイトル</p>
           <div className="flex">
             <TextField
@@ -30,7 +30,7 @@ const Register: FC = () => {
             />
           </div>
         </div>
-        <div className="flex-col space-y-1">
+        <div className="space-y-1">
           <p className="text-sm font-light">著者名</p>
           <div className="flex">
             <TextField
@@ -43,7 +43,7 @@ const Register: FC = () => {
             />
           </div>
         </div>
-        <div className="flex-col space-y-1">
+        <div className="space-y-1">
           <p className="text-sm font-light">ISBN</p>
           <div className="flex">
             <TextField
