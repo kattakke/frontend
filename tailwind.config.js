@@ -10,6 +10,10 @@ export default {
       gray: '#CCCCCC',
       red: '#FF0000',
       black: '#444444',
+      success: '#28753C',
+      info: '#2E5AAC',
+      warning: '#B98000',
+      error: '#DA1414',
     },
     fontSize: {
       xs: '12px',
@@ -25,6 +29,7 @@ export default {
         'header-button': '40',
         'modal-overlay': '50',
         modal: '60',
+        alert: '70',
       },
       backgroundImage: {
         'book-shelf': "url('/book-shelf.jpg')",
