@@ -29,6 +29,9 @@ export default {
       backgroundImage: {
         'book-shelf': "url('/book-shelf.jpg')",
       },
+      screens: {
+        'sm': {'max': '380px'}
+      }
     },
   },
   plugins: [],

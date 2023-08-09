@@ -4,10 +4,10 @@ import TextField from '../components/TextField'
 
 const Setting: FC = () => {
   return (
-    <div className="py-32">
-      <div className="flex-col items-center justify-center rounded-3xl bg-white p-8 shadow-md">
+    <div className="pt-10 sm:pt-5">
+      <div className="rounded-3xl bg-white p-8 sm:p-5 shadow-md sm:h-[500px] sm:overflow-y-scroll">
         <h1 className="pb-6 text-center text-xl">プロフィールを変更</h1>
-        <div className="flex-col space-y-2 pb-6">
+        <div className="space-y-2 pb-6">
           <p className="font-light">名前</p>
           <div className="flex">
             <TextField
@@ -18,7 +18,7 @@ const Setting: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="flex-col space-y-2 pb-6">
+        <div className="space-y-2 pb-6">
           <p className="font-light">メールアドレス</p>
           <div className="flex">
             <TextField
@@ -28,7 +28,7 @@ const Setting: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="flex-col space-y-2 pb-6">
+        <div className="space-y-2 pb-6">
           <p className="font-light">パスワード</p>
           <div className="flex">
             <TextField
@@ -38,7 +38,7 @@ const Setting: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="flex-col space-y-2 border-b pb-6">
+        <div className="space-y-2 border-b pb-6">
           <p className="font-light">パスワード再入力</p>
           <div className="flex">
             <TextField
@@ -49,7 +49,7 @@ const Setting: FC = () => {
           </div>
         </div>
         <div className="pb-12 pt-6">
-          <div className="flex-col space-y-2">
+          <div className="space-y-2">
             <div className="flex justify-between">
               <p className="font-light">現在のパスワード</p>
               <p className="mt-auto text-xs text-red">※入力必須</p>
