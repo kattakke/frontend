@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { AuthContext } from '~/context/AuthProvider'
 import apiClient from '~/util/apiClient.ts'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
 
 export interface Auth {
   isAuth: boolean
@@ -72,9 +72,13 @@ export const useProvideAuth = (): Auth => {
 
 export const useRequireLogin = (): void => {
   const { isAuth } = useAuth()
-  console.log(isAuth)
+  const location = useLocation()
   const navigate = useNavigate()
   useEffect(() => {
-    if (!isAuth) navigate('/login')
+    if (!isAuth)
+      navigate({
+        pathname: '/login',
+        search: `?${createSearchParams({ to: location.pathname }).toString()}`,
+      })
   }, [isAuth])
 }
