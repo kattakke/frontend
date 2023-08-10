@@ -10,7 +10,8 @@
     "lint:fix": "eslint src --fix --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write 'src/**/*.tsx'",
     "preview": "vite preview",
-    "generate:api": "npx openapi2aspida -c aspida.config.cjs"
+    "generate:api": "npx openapi2aspida -c aspida.config.cjs",
+    "prebuild": "npm run generate:api"
   },
   "dependencies": {
     "@aspida/fetch": "^1.13.3",
