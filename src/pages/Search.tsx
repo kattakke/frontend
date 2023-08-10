@@ -4,8 +4,10 @@ import BookDetail from '../components/BookDetail'
 import TextField from '../components/TextField'
 import useAspidaSWR from '@aspida/swr'
 import apiClient from '~/util/apiClient.ts'
+import { useRequireLogin } from '~/hooks/useAuth.ts'
 
 const Search: FC = () => {
+  useRequireLogin()
   const [title, setTitle] = useState('')
   const { data: books } = useAspidaSWR(apiClient.users._userId('hoge').shelf, {
     query: { title },

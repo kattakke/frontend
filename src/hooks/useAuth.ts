@@ -1,6 +1,7 @@
-import { useCallback, useContext, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { AuthContext } from '~/context/AuthProvider'
 import apiClient from '~/util/apiClient.ts'
+import { useNavigate } from 'react-router-dom'
 
 export interface Auth {
   isAuth: boolean
@@ -67,4 +68,13 @@ export const useProvideAuth = (): Auth => {
   }
 
   return { isAuth, login, signup, logout, autoLogin, getAuthHeader }
+}
+
+export const useRequireLogin = (): void => {
+  const { isAuth } = useAuth()
+  console.log(isAuth)
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (!isAuth) navigate('/login')
+  }, [isAuth])
 }

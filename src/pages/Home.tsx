@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom'
 import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
 import { type Book } from '~/types'
+import { useRequireLogin } from '~/hooks/useAuth.ts'
 
 const Home: FC = () => {
+  useRequireLogin()
   const recentBooks: Book[] = []
 
   return (

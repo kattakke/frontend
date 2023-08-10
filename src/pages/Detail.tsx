@@ -5,12 +5,14 @@ import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
 import Image from '../components/Image'
 import { useBook, useBooks } from '../hooks/useBook'
+import { useRequireLogin } from '~/hooks/useAuth.ts'
 
 interface ParamsType {
   id?: string
 }
 
 const Detail: FC = () => {
+  useRequireLogin()
   const urlParams: ParamsType = useParams()
   const { data: book } = useBook(urlParams.id)
   const relatedBooks = useBooks([])
@@ -72,7 +74,12 @@ const Detail: FC = () => {
           ))}
         </div>
       </div>
-      <Alert variant="error" message='予期しないエラーが発生しました' open={open} onOpenChange={setOpen} />
+      <Alert
+        variant="error"
+        message="予期しないエラーが発生しました"
+        open={open}
+        onOpenChange={setOpen}
+      />
     </div>
   )
 }
