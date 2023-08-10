@@ -8,7 +8,7 @@ export interface Auth {
   signup: (email: string, password: string) => Promise<void>
   logout: () => Promise<void>
   autoLogin: () => Promise<void>
-  getToken: () => string | null
+  getAuthHeader: () => { Authorization: string }
 }
 
 export const useAuth = (): Auth => {
@@ -22,14 +22,14 @@ export const useProvideAuth = (): Auth => {
   const [token, setToken] = useState<string | null>(null)
 
   const login: Auth['login'] = useCallback(async (email, password) => {
-    await apiClient.auth.login
+    const newToken = await apiClient.auth.login
       .$post({ body: { id: email, password } })
       .catch((e) => {
         throw e
       })
     setIsAuth(true)
-    setToken('token-string')
-    localStorage.setItem(LS_TOKEN_KEY, 'token-string')
+    setToken(newToken)
+    localStorage.setItem(LS_TOKEN_KEY, newToken)
   }, [])
 
   const signup: Auth['signup'] = async (email, password) => {
@@ -54,14 +54,17 @@ export const useProvideAuth = (): Auth => {
     const token = localStorage.getItem(LS_TOKEN_KEY)
     if (token !== null) {
       await apiClient.auth.me.$get({
-        /* header: {} */
+        headers: {
+          ...getAuthHeader(),
+        },
       })
     }
   }
 
-  const getToken: Auth['getToken'] = () => {
-    return token
+  const getAuthHeader: Auth['getAuthHeader'] = () => {
+    if (token === null) throw new Error('not logged in')
+    return { Authorization: `Bearer ${token}` }
   }
 
-  return { isAuth, login, signup, logout, autoLogin, getToken }
+  return { isAuth, login, signup, logout, autoLogin, getAuthHeader }
 }
