@@ -2,16 +2,24 @@ import { type FC, useState } from 'react'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
 import { useAuth } from '../hooks/useAuth'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Login: FC = () => {
   const [email] = useState('')
   const [password] = useState('')
-  // const { login } = useAuth()
+  const navigate = useNavigate()
+  const { login } = useAuth()
 
-  // const submitLogin = (): void => {
-  //   login(email, password).then(() => {})
-  // }
+  const submitLogin = (): void => {
+    // TODO: login
+    void login(email, password)
+      .then(() => {
+        navigate('/home')
+      })
+      .catch((e) => {
+        throw e
+      })
+  }
 
   return (
     <div className="py-32">
@@ -39,9 +47,13 @@ const Login: FC = () => {
           </div>
         </div>
         <div className="flex flex-col  items-center justify-center">
-          <Button className='mb-3'>ログイン</Button>
+          <Button className="mb-3" onClick={submitLogin}>
+            ログイン
+          </Button>
           <Link to={'/signup'}>
-            <p className='border-b text-sm text-main'>登録がお済みでない方はこちらから</p>
+            <p className="border-b text-sm text-main">
+              登録がお済みでない方はこちらから
+            </p>
           </Link>
         </div>
       </div>

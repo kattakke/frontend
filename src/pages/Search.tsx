@@ -2,11 +2,14 @@ import { type FC, useState } from 'react'
 import { HiOutlineSearch } from 'react-icons/hi'
 import BookDetail from '../components/BookDetail'
 import TextField from '../components/TextField'
-import { useBooks } from '../hooks/useBook'
+import useAspidaSWR from '@aspida/swr'
+import apiClient from '~/util/apiClient.ts'
 
 const Search: FC = () => {
-  const [word, setWord] = useState('')
-  const booksData = useBooks([])
+  const [title, setTitle] = useState('')
+  const { data: books } = useAspidaSWR(apiClient.users._userId('hoge').shelf, {
+    query: { title },
+  })
 
   return (
     <div>
@@ -14,7 +17,7 @@ const Search: FC = () => {
         <TextField
           className="w-full"
           onChange={(e) => {
-            setWord(e.target.value)
+            setTitle(e.target.value)
           }}
         />
         <HiOutlineSearch className="mx-3 h-8 w-8" />
@@ -23,20 +26,15 @@ const Search: FC = () => {
         <p>タグ検索とかジャンル検索とか</p>
       </div> */}
       <div className="mt-8 grid grid-cols-2 gap-4">
-        {booksData.map(
-          (book) =>
-            ((book.data.title ?? '') + (book.data.author ?? '')).search(
-              word
-            ) !== -(-1) && (
-              <BookDetail
-                id={book.data.bookId}
-                imagePath={undefined}
-                title={book.data.title}
-                author={book.data.author}
-                key={book.data.bookId}
-              />
-            )
-        )}
+        {books?.map((book) => (
+          <BookDetail
+            id={book.bookId}
+            imagePath={undefined}
+            title={book.title}
+            author={book.author}
+            key={book.bookId}
+          />
+        ))}
       </div>
     </div>
   )
