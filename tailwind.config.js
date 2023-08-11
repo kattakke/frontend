@@ -14,6 +14,7 @@ export default {
       info: '#2E5AAC',
       warning: '#B98000',
       error: '#DA1414',
+      logout: "#FF5047"
     },
     fontSize: {
       xs: '12px',
@@ -34,6 +35,9 @@ export default {
       backgroundImage: {
         'book-shelf': "url('/book-shelf.jpg')",
       },
+      screens: {
+        'sm': {'max': '380px'}
+      }
     },
   },
   plugins: [],
