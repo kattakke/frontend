@@ -23,7 +23,12 @@ const Top: FC = () => {
             </div>
           </div>
           <Link to={'/login'} className="mt-auto px-4">
-            <Button className="w-full">ログイン画面へ</Button>
+            <Button className="w-full">ログイン</Button>
+          </Link>
+          <Link to={'/signup'} className="mt-4 px-4">
+            <Button className="w-full" variant="outline">
+              新規登録
+            </Button>
           </Link>
         </div>
       </div>
