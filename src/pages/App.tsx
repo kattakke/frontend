@@ -18,7 +18,7 @@ const App: FC = () => {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Toast.Provider swipeDirection='down'>
+        <Toast.Provider swipeDirection="down">
           <Routes>
             <Route element={<MainLayout />}>
               <Route path="/login" element={<Login />} />

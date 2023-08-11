@@ -8,7 +8,7 @@ import apiClient from '~/util/apiClient.ts'
 
 const Register: FC = () => {
   const [title, setTitle] = useState<string>('')
-  const [author, setAuthor] = useState('')
+  const [, setAuthor] = useState('')
   const [isbn, setIsbn] = useState('')
   const [isCameraOn, setIsCameraOn] = useState(false)
   const { data: books } = useAspidaSWR(apiClient.search, {

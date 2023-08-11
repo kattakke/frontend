@@ -1,15 +1,12 @@
-import React from 'react'
+import { type FC } from 'react'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
-import { useAuth } from '../hooks/useAuth'
 
-const Signup = () => {
-  const { login } = useAuth()
-
+const Signup: FC = () => {
   return (
     <div className="py-8">
-      <div className="bg-white rounded-3xl px-6 py-8 space-y-6 flex-col items-center justify-center shadow-md">
-        <h1 className='text-center text-lg'>会員登録</h1>
+      <div className="flex-col items-center justify-center space-y-6 rounded-3xl bg-white px-6 py-8 shadow-md">
+        <h1 className="text-center text-lg">会員登録</h1>
         <div className="flex-col space-y-2">
           <p className="font-light">名前</p>
           <div className="flex">
@@ -51,7 +48,7 @@ const Signup = () => {
             ></TextField>
           </div>
         </div>
-        <div className='flex pb-5 items-center justify-center'>
+        <div className="flex items-center justify-center pb-5">
           <Button>登録</Button>
         </div>
       </div>

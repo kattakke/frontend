@@ -32,7 +32,6 @@ const quaggaConfig = (videoElm: Element): QuaggaJSConfigObject => ({
 })
 
 const Scanner: FC<Props> = ({ onDetected, onVideoOff, className }) => {
-  // TODO: to be video
   const videoRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     if (videoRef.current === null) return
@@ -58,15 +57,10 @@ const Scanner: FC<Props> = ({ onDetected, onVideoOff, className }) => {
     return () => {
       Quagga.offDetected(callback)
     }
-  }, [])
+  }, [onDetected, onVideoOff])
   return (
-    <div
-      className={[
-        'p-4 bg-white rounded-3xl',
-        className,
-      ].join(' ')}
-    >
-      <div ref={videoRef} id='barcode' className='shadow-md'></div>
+    <div className={['p-4 bg-white rounded-3xl', className].join(' ')}>
+      <div ref={videoRef} id="barcode" className="shadow-md"></div>
       <Button onClick={onVideoOff} className="mt-4 w-full">
         閉じる
       </Button>
