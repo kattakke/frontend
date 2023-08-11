@@ -6,6 +6,7 @@ import Image from '../components/Image'
 import { useRequireLogin } from '~/hooks/useAuth.ts'
 import useAspidaSWR from '@aspida/swr'
 import apiClient from '~/util/apiClient.ts'
+import Spinner from '~/components/Spinner'
 
 interface ParamsType {
   id?: string
@@ -14,15 +15,16 @@ interface ParamsType {
 const Detail: FC = () => {
   useRequireLogin()
   const urlParams: ParamsType = useParams()
-  const { data: book } = useAspidaSWR(
+  const { data: book, isLoading } = useAspidaSWR(
     apiClient.books._bookId(urlParams?.id ?? '')
   )
   const [open, setOpen] = useState(false)
 
   if (book === undefined)
-    return (
+    return isLoading ? (
+      <Spinner />
+    ) : (
       <>
-        <p>Book not found</p>
         <Alert
           variant="error"
           open
