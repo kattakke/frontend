@@ -27,7 +27,7 @@ const AppHeader: FC = () => {
 
   return (
     <div className="flex h-20 items-center justify-between pl-3 pr-5 text-white">
-      <Link to="/home" className="p-2">
+      <Link to={isAuth ? '/home' : '/'} className="p-2">
         <img src="/logo.png" alt="logo" className="h-10 w-10" />
       </Link>
       {isAuth && (
