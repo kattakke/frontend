@@ -48,11 +48,16 @@ const Button: FC<Props> = ({
       </button>
     )
   } else {
+    const colorStyle = {
+      main: 'active:bg-[#6eb9f7]',
+      accent: 'active:bg-[#f7a85d]',
+    }
     return (
       <button
         className={[
-          'rounded-lg font-bold h-[36px] w-[140px] transition duration-700 active:duration-0 active:bg-[#6eb9f7]',
+          'rounded-lg font-bold h-[36px] w-[140px] transition duration-700 active:duration-0',
           ...constructColorStyle(color, variant),
+          colorStyle[color],
           className,
         ].join(' ')}
         disabled={disabled}
