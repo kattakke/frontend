@@ -25,12 +25,18 @@ const Register: FC = () => {
   const onAddBook = (
     addedIsbn?: string,
     addedTitle?: string,
-    addedAuthor?: string
+    addedAuthor?: string,
+    addedImagePath?: string
   ): void => {
     apiClient.books
       .$post({
         headers: getAuthHeader(),
-        body: { isbn: addedIsbn, title: addedTitle, author: addedAuthor },
+        body: {
+          isbn: addedIsbn,
+          title: addedTitle,
+          author: addedAuthor,
+          imagePath: addedImagePath,
+        },
       })
       .then((res) => {
         console.log(res)
@@ -110,7 +116,12 @@ const Register: FC = () => {
                 <Button
                   className="mt-2 w-full"
                   onClick={() => {
-                    onAddBook(book.isbn ?? '', book.title, book.author ?? '')
+                    onAddBook(
+                      book.isbn ?? '',
+                      book.title,
+                      book.author ?? '',
+                      book.imagePath
+                    )
                   }}
                 >
                   追加

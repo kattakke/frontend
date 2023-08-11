@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Image: FC<Props> = ({ src, alt = 'image', className }) => {
-  if (src !== undefined) {
+  if (src !== undefined && src !== "") {
     return (
       <span className="flex justify-center">
         <img
