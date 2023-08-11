@@ -14,15 +14,16 @@ interface ParamsType {
 const Detail: FC = () => {
   useRequireLogin()
   const urlParams: ParamsType = useParams()
-  const { data: book } = useAspidaSWR(
+  const { data: book, isLoading } = useAspidaSWR(
     apiClient.books._bookId(urlParams?.id ?? '')
   )
   const [open, setOpen] = useState(false)
 
   if (book === undefined)
-    return (
+    return isLoading ? (
+      <p>Loading...</p>
+    ) : (
       <>
-        <p>Book not found</p>
         <Alert
           variant="error"
           open
