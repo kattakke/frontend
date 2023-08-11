@@ -6,7 +6,7 @@ const Top: FC = () => {
   return (
     <>
       <div className="flex h-screen w-screen flex-col bg-book-shelf bg-cover bg-top">
-        <div className='flex flex-col bg-white/20 h-full py-4'>
+        <div className="flex flex-col bg-white/20 h-full py-4">
           <div className="flex h-2/3">
             <div className="mx-4 mb-10 mt-auto w-full rounded-2xl bg-white/80 px-6 py-8 shadow-md">
               <div className="flex flex-col items-center">

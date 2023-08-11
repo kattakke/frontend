@@ -18,7 +18,7 @@ const Search: FC = () => {
   )
 
   return (
-    <div className='mb-20'>
+    <div className="mb-20">
       <div className="flex items-center justify-between">
         <TextField
           className="w-full"
