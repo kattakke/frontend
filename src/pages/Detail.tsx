@@ -21,7 +21,9 @@ const Detail: FC = () => {
 
   if (book === undefined)
     return isLoading ? (
-      <p>Loading...</p>
+      <div className="flex justify-center" aria-label="読み込み中">
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-main border-t-transparent"></div>
+      </div>
     ) : (
       <>
         <Alert
