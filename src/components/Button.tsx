@@ -51,7 +51,7 @@ const Button: FC<Props> = ({
     return (
       <button
         className={[
-          'rounded-lg font-bold h-[36px] w-[140px]',
+          'rounded-lg font-bold h-[36px] w-[140px] transition duration-700 active:duration-0 active:bg-[#6eb9f7]',
           ...constructColorStyle(color, variant),
           className,
         ].join(' ')}
