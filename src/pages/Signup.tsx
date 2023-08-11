@@ -20,6 +20,11 @@ const Signup: FC = () => {
       setAlertOpen(true)
       return
     }
+    if (firstPassword.length < 6) {
+      setAlertMessage("パスワードが短すぎます")
+      setAlertOpen(true)
+      return
+    }
     signup(email, firstPassword)
       .then(() => {
         navigate('/home')
