@@ -14,8 +14,8 @@ export default {
       info: '#2E5AAC',
       warning: '#B98000',
       error: '#DA1414',
-      logout: "#FF5047",
-      transparent: 'transparent'
+      logout: '#FF5047',
+      transparent: 'transparent',
     },
     fontSize: {
       xs: '12px',
@@ -37,8 +37,17 @@ export default {
         'book-shelf': "url('/book-shelf.jpg')",
       },
       screens: {
-        'sm': {'max': '380px'}
-      }
+        sm: { max: '380px' },
+      },
+      height: {
+        screen: ['100vh', '100dvh'],
+      },
+      minHeight: {
+        screen: ['100vh', '100dvh'],
+      },
+      maxHeight: {
+        screen: ['100vh', '100dvh'],
+      },
     },
   },
   plugins: [],
