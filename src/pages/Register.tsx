@@ -12,7 +12,6 @@ const Register: FC = () => {
   useRequireLogin()
   const { getAuthHeader } = useAuth()
   const [title, setTitle] = useState<string>('')
-  const [, setAuthor] = useState('')
   const [isbn, setIsbn] = useState('')
   const [isCameraOn, setIsCameraOn] = useState(false)
   const [alertOpen, setAlertOpen] = useState(false)
@@ -84,7 +83,7 @@ const Register: FC = () => {
             />
           </div>
         </div>
-        <div className="space-y-1">
+        {/* <div className="space-y-1">
           <p className="text-sm font-light">著者名</p>
           <div className="flex">
             <TextField
@@ -99,7 +98,7 @@ const Register: FC = () => {
               }}
             />
           </div>
-        </div>
+        </div> */}
         <div className="space-y-1">
           <p className="text-sm font-light">ISBN</p>
           <div className="flex">
