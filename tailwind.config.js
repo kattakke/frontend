@@ -14,7 +14,8 @@ export default {
       info: '#2E5AAC',
       warning: '#B98000',
       error: '#DA1414',
-      logout: "#FF5047"
+      logout: "#FF5047",
+      transparent: 'transparent'
     },
     fontSize: {
       xs: '12px',
