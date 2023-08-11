@@ -4,6 +4,7 @@ import Alert from '~/components/Alert'
 import { useAuth } from '~/hooks/useAuth'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
+import { Link } from 'react-router-dom'
 
 const Signup: FC = () => {
   const [email, setEmail] = useState('')
@@ -21,7 +22,7 @@ const Signup: FC = () => {
       return
     }
     if (firstPassword.length < 6) {
-      setAlertMessage("パスワードが短すぎます")
+      setAlertMessage('パスワードが短すぎます')
       setAlertOpen(true)
       return
     }
@@ -91,8 +92,15 @@ const Signup: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="flex items-center justify-center pb-5">
-          <Button onClick={onSignup}>登録</Button>
+        <div className="flex flex-col items-center justify-center pb-5">
+          <Button className="mb-3" onClick={onSignup}>
+            登録
+          </Button>
+          <Link to={'/login'}>
+            <p className="border-b text-sm text-main">
+              登録済みの方はこちらから
+            </p>
+          </Link>
         </div>
         <Alert
           open={alertOpen}

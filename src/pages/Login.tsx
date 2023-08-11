@@ -53,7 +53,7 @@ const Login: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="flex flex-col  items-center justify-center">
+        <div className="flex flex-col items-center justify-center">
           <Button className="mb-3" onClick={submitLogin}>
             ログイン
           </Button>
