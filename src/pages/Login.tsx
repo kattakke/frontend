@@ -1,21 +1,35 @@
-import { type FC, useState } from 'react'
+import { type FC, useEffect, useState } from 'react'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
 import { useAuth } from '../hooks/useAuth'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { type NavigateFunction } from 'react-router'
+
+const navigateAfterLogin = (
+  searchParams: URLSearchParams,
+  navigate: NavigateFunction
+): void => {
+  const to = searchParams.get('to')
+  navigate({ pathname: to ?? '/home' }, { replace: true })
+}
 
 const Login: FC = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { login } = useAuth()
+  const { login, autoLogin } = useAuth()
+
+  useEffect(() => {
+    void autoLogin().then(() => {
+      navigateAfterLogin(searchParams, navigate)
+    })
+  }, [autoLogin, navigate, searchParams])
 
   const submitLogin = (): void => {
     void login(email, password)
       .then(() => {
-        const to = searchParams.get('to')
-        navigate({ pathname: to ?? '/home' }, { replace: true })
+        navigateAfterLogin(searchParams, navigate)
       })
       .catch((e) => {
         throw e
