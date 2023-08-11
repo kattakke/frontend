@@ -61,9 +61,12 @@ export const useProvideAuth = (): Auth => {
   )
 
   const logout: Auth['logout'] = useCallback(async () => {
-    await apiClient.auth.logout.$patch().catch((e) => {
-      throw e
-    })
+    if (token === null) throw new Error('not logged in')
+    await apiClient.auth.logout
+      .$patch({ headers: constructAuthHeader(token) })
+      .catch((e) => {
+        throw e
+      })
     setIsAuth(false)
     setToken(null)
     setUser(null)
