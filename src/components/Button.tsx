@@ -12,16 +12,6 @@ type Props = {
   className?: string
 } & ComponentPropsWithoutRef<'button'>
 
-const constructColorStyle = (color: Color, variant: Variant): string[] => {
-  return [
-    { solid: `bg-${color}`, outline: `border-${color}` }[variant],
-    ...{
-      solid: ['text-white'],
-      outline: [`text-${color}`, 'bg-white/80', 'border-[3px]'],
-    }[variant],
-  ]
-}
-
 const Button: FC<Props> = ({
   children,
   color = 'main',
@@ -48,11 +38,21 @@ const Button: FC<Props> = ({
       </button>
     )
   } else {
+    const colorStyle = (color: Color, variant: Variant): string => {
+      const style = {
+        solid: { main: 'bg-main text-white', accent: 'bg-accent text-white' },
+        outline: {
+          main: 'border-main text-main bg-white/80 border-[3px]',
+          accent: 'border-accent text-accent bg-white/80 border-[3px]',
+        },
+      }
+      return style[variant][color]
+    }
     return (
       <button
         className={[
           'rounded-lg font-bold h-[36px] w-[140px]',
-          ...constructColorStyle(color, variant),
+          colorStyle(color, variant),
           className,
         ].join(' ')}
         disabled={disabled}

@@ -1,27 +1,34 @@
+import useAspidaSWR from '@aspida/swr'
 import { type FC } from 'react'
 import { HiOutlinePlus, HiOutlineSearch } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
+import { useAuth, useRequireLogin } from '~/hooks/useAuth.ts'
+import apiClient from '~/util/apiClient'
 import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
-import { type Book } from '~/types'
-import { useRequireLogin } from '~/hooks/useAuth.ts'
 
 const Home: FC = () => {
   useRequireLogin()
-  const recentBooks: Book[] = []
+  const { getUser } = useAuth()
+  const { data: recentBooks } = useAspidaSWR(
+    apiClient.users._userId(getUser().userId ?? '').shelf
+  )
 
   return (
-    <div>
-      <p className="text-xl font-bold">最近登録した本</p>
+    <div className='pb-10'>
+      <p className="text-xl font-bold">ピックアップ</p>
       <div className="mt-8 grid grid-cols-2 gap-4">
-        {recentBooks.slice(0, 4).map((book) => (
-          <BookDetail
-            id={book.bookId}
-            title={book.title}
-            author={book.author}
-            key={book.bookId}
-          />
-        ))}
+        {recentBooks
+          ?.slice(0, 2)
+          .map((book) => (
+            <BookDetail
+              id={book.bookId}
+              title={book.title}
+              author={book.author}
+              imagePath={book.imagePath}
+              key={book.bookId}
+            />
+          ))}
       </div>
       <Link to="/search">
         <Button
