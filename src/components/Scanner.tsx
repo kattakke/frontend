@@ -59,13 +59,8 @@ const Scanner: FC<Props> = ({ onDetected, onVideoOff, className }) => {
     }
   }, [onDetected, onVideoOff])
   return (
-    <div
-      className={[
-        'p-4 bg-white rounded-3xl',
-        className,
-      ].join(' ')}
-    >
-      <div ref={videoRef} id='barcode' className='shadow-md'></div>
+    <div className={['p-4 bg-white rounded-3xl', className].join(' ')}>
+      <div ref={videoRef} id="barcode" className="shadow-md"></div>
       <Button onClick={onVideoOff} className="mt-4 w-full">
         閉じる
       </Button>
