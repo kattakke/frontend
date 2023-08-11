@@ -1,8 +1,11 @@
 import { type FC } from 'react'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
+import { useRequireLogin } from '~/hooks/useAuth.ts'
 
 const Setting: FC = () => {
+  useRequireLogin()
+
   return (
     <div className="pt-10 sm:pt-5">
       <div className="rounded-3xl bg-white p-8 sm:p-5 shadow-md sm:h-[500px] sm:overflow-y-scroll">

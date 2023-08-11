@@ -3,10 +3,12 @@ import { useProvideAuth, type Auth } from '../hooks/useAuth'
 
 export const AuthContext = createContext<Auth>({
   isAuth: false,
-  login: () => {},
-  signup: () => {},
-  logout: () => {},
-  autoLogin: () => {},
+  login: async () => {},
+  signup: async () => {},
+  logout: async () => {},
+  autoLogin: async () => {},
+  getAuthHeader: () => ({ Authorization: '' }),
+  getUser: () => ({}),
 })
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {

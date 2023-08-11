@@ -4,12 +4,18 @@ import BookDetail from '../components/BookDetail'
 import TextField from '../components/TextField'
 import useAspidaSWR from '@aspida/swr'
 import apiClient from '~/util/apiClient.ts'
+import { useAuth, useRequireLogin } from '~/hooks/useAuth.ts'
 
 const Search: FC = () => {
+  useRequireLogin()
   const [title, setTitle] = useState('')
-  const { data: books } = useAspidaSWR(apiClient.users._userId('hoge').shelf, {
-    query: { title },
-  })
+  const { getUser } = useAuth()
+  const { data: books } = useAspidaSWR(
+    apiClient.users._userId(getUser().userId ?? '').shelf,
+    {
+      query: { title },
+    }
+  )
 
   return (
     <div className='mb-20'>
