@@ -2,19 +2,20 @@ import { type FC, useState } from 'react'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
 import { useAuth } from '../hooks/useAuth'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 
 const Login: FC = () => {
-  const [email] = useState('')
-  const [password] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const { login } = useAuth()
 
   const submitLogin = (): void => {
-    // TODO: login
     void login(email, password)
       .then(() => {
-        navigate('/home')
+        const to = searchParams.get('to')
+        navigate({ pathname: to ?? '/home' }, { replace: true })
       })
       .catch((e) => {
         throw e
@@ -32,6 +33,9 @@ const Login: FC = () => {
               placeholder="user@example.com"
               type="email"
               value={email}
+              onChange={(e) => {
+                setEmail(e.target.value)
+              }}
             ></TextField>
           </div>
         </div>
@@ -43,6 +47,9 @@ const Login: FC = () => {
               placeholder="6文字以上で入力"
               type="password"
               value={password}
+              onChange={(e) => {
+                setPassword(e.target.value)
+              }}
             ></TextField>
           </div>
         </div>

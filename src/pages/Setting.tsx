@@ -1,8 +1,11 @@
 import { type FC } from 'react'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
+import { useRequireLogin } from '~/hooks/useAuth.ts'
 
 const Setting: FC = () => {
+  useRequireLogin()
+
   return (
     <div className="py-32">
       <div className="flex-col items-center justify-center rounded-3xl bg-white p-8 shadow-md">
