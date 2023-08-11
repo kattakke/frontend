@@ -1,6 +1,6 @@
 import { type FC } from 'react'
-import Image from './Image'
 import { Link } from 'react-router-dom'
+import Image from './Image'
 
 interface Props {
   id?: string
@@ -11,10 +11,9 @@ interface Props {
 }
 
 const BookDetail: FC<Props> = ({ id, imagePath, title, author, className }) => {
-  if (id === undefined) return null
   return (
     <Link
-      to={`/detail/${id}`}
+      to={id === undefined || id === null ? '' : `/detail/${id}`}
       className={['inline-block min-w-[45%]', className].join(' ')}
     >
       <Image src={imagePath} alt={'book'} className="mx-auto" />

@@ -15,6 +15,8 @@ const Register: FC = () => {
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState('')
 
+  console.log(author)
+
   const { data: books } = useAspidaSWR(apiClient.search, {
     query: { title, isbn },
   })
@@ -95,9 +97,8 @@ const Register: FC = () => {
         </div>
         <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-12">
           {books?.map((book) => (
-            <div key={book.bookId} className="flex flex-col justify-between">
+            <div key={book.title} className="flex flex-col justify-between">
               <BookDetail
-                id={book.bookId}
                 title={book.title}
                 author={book.author}
                 imagePath={book.imagePath}
@@ -105,7 +106,7 @@ const Register: FC = () => {
               <Button
                 className="mt-2 w-full"
                 onClick={() => {
-                  onAddBook(book.isbn, book.title, book.author)
+                  onAddBook(book.isbn ?? "", book.title, book.author ?? "")
                 }}
               >
                 追加
