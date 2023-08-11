@@ -10,7 +10,7 @@ const Top: FC = () => {
           <div className="flex h-2/3">
             <div className="mx-4 mb-10 mt-auto w-full rounded-2xl bg-white/80 px-6 py-8 shadow-md">
               <div className="flex flex-col items-center">
-                <div className="flex w-full justify-start">
+                <div className="flex w-full justify-center">
                   <img src="/logo.png" alt="logo" className="h-10 w-10" />
                 </div>
                 <div className="h-28 px-10 pb-10 pt-6">
