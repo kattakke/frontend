@@ -1,23 +1,24 @@
-import { type FC, useState } from 'react'
+import useAspidaSWR from '@aspida/swr'
+import { useState, type FC } from 'react'
 import { HiOutlineSearch } from 'react-icons/hi'
+import Spinner from '~/components/Spinner'
+import { useAuth, useRequireLogin } from '~/hooks/useAuth.ts'
+import apiClient from '~/util/apiClient.ts'
 import BookDetail from '../components/BookDetail'
 import TextField from '../components/TextField'
-import useAspidaSWR from '@aspida/swr'
-import apiClient from '~/util/apiClient.ts'
-import { useAuth, useRequireLogin } from '~/hooks/useAuth.ts'
 
 const Search: FC = () => {
   useRequireLogin()
   const [title, setTitle] = useState('')
   const { getUser } = useAuth()
-  const { data: books } = useAspidaSWR(
+  const { data: books, isLoading } = useAspidaSWR(
     apiClient.users._userId(getUser().userId ?? '').shelf,
     {
       query: { title },
     }
   )
 
-  console.log(books)
+  if (isLoading) return <Spinner />
 
   return (
     <div className="mb-20">
