@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Image: FC<Props> = ({ src, alt = 'image', className }) => {
-  if (src !== undefined && src !== "") {
+  if (src !== undefined && src !== '') {
     return (
       <span className="flex justify-center">
         <img
@@ -22,12 +22,12 @@ const Image: FC<Props> = ({ src, alt = 'image', className }) => {
     return (
       <span
         className={[
-          'bg-white flex flex-col items-center justify-center space-y-2 shadow-lg aspect-square text-main h-40',
+          'bg-white flex flex-col items-center justify-center space-y-1 shadow-lg w-32 text-main h-40',
           className,
         ].join(' ')}
       >
-        <CiImageOff className="h-10 w-10" />
-        <span>No Image</span>
+        <CiImageOff className="h-8 w-8" />
+        <span className='text-xs'>No Image</span>
       </span>
     )
   }
