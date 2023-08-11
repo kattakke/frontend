@@ -72,7 +72,7 @@ export const useProvideAuth = (): Auth => {
 
   const autoLogin: Auth['autoLogin'] = useCallback(async () => {
     const newToken = localStorage.getItem(LS_TOKEN_KEY)
-    if (newToken == null) return
+    if (newToken == null) throw new Error('token not found')
     const newUser = await apiClient.auth.me.$get({
       headers: constructAuthHeader(newToken),
     })
@@ -96,14 +96,18 @@ export const useProvideAuth = (): Auth => {
 }
 
 export const useRequireLogin = (): void => {
-  const { isAuth } = useAuth()
+  const { isAuth, autoLogin } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
   useEffect(() => {
     if (!isAuth)
-      navigate({
-        pathname: '/login',
-        search: `?${createSearchParams({ to: location.pathname }).toString()}`,
+      void autoLogin().catch(() => {
+        navigate({
+          pathname: '/login',
+          search: `?${createSearchParams({
+            to: location.pathname,
+          }).toString()}`,
+        })
       })
-  }, [isAuth, location.pathname, navigate])
+  }, [autoLogin, isAuth, location.pathname, navigate])
 }
