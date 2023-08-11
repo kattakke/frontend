@@ -6,6 +6,7 @@ import Image from '../components/Image'
 import { useRequireLogin } from '~/hooks/useAuth.ts'
 import useAspidaSWR from '@aspida/swr'
 import apiClient from '~/util/apiClient.ts'
+import Spinner from '~/components/Spinner'
 
 interface ParamsType {
   id?: string
@@ -21,9 +22,7 @@ const Detail: FC = () => {
 
   if (book === undefined)
     return isLoading ? (
-      <div className="flex justify-center" aria-label="読み込み中">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-main border-t-transparent"></div>
-      </div>
+      <Spinner />
     ) : (
       <>
         <Alert
