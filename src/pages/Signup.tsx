@@ -6,7 +6,7 @@ const Signup: FC = () => {
   return (
     <div className="py-8">
       <div className="flex-col items-center justify-center space-y-6 rounded-3xl bg-white px-6 py-8 shadow-md">
-        <h1 className="text-center text-lg">会員登録</h1>
+        <h1 className="text-center text-xl">会員登録</h1>
         <div className="flex-col space-y-2">
           <p className="font-light">名前</p>
           <div className="flex">
