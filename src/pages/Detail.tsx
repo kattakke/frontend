@@ -1,11 +1,11 @@
 import { useState, type FC } from 'react'
 import { useParams } from 'react-router-dom'
 import Alert from '../components/Alert'
-import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
 import Image from '../components/Image'
-import { useBook, useBooks } from '../hooks/useBook'
 import { useRequireLogin } from '~/hooks/useAuth.ts'
+import useAspidaSWR from '@aspida/swr'
+import apiClient from '~/util/apiClient.ts'
 
 interface ParamsType {
   id?: string
@@ -14,9 +14,23 @@ interface ParamsType {
 const Detail: FC = () => {
   useRequireLogin()
   const urlParams: ParamsType = useParams()
-  const { data: book } = useBook(urlParams.id)
-  const relatedBooks = useBooks([])
+  const { data: book } = useAspidaSWR(
+    apiClient.books._bookId(urlParams?.id ?? '')
+  )
   const [open, setOpen] = useState(false)
+
+  if (book === undefined)
+    return (
+      <>
+        <p>Book not found</p>
+        <Alert
+          variant="error"
+          open
+          onOpenChange={() => {}}
+          message="該当する本が見つかりませんでした。"
+        />
+      </>
+    )
 
   return (
     <div className="overflow-hidden">
@@ -60,7 +74,7 @@ const Detail: FC = () => {
           本棚から削除
         </Button>
       </div>
-      <div>
+      {/* <div>
         <h1 className="mt-10 text-lg">関連書籍</h1>
         <div className="flex space-x-4 overflow-x-scroll p-4">
           {relatedBooks.map(({ data: value }) => (
@@ -73,7 +87,7 @@ const Detail: FC = () => {
             />
           ))}
         </div>
-      </div>
+      </div> */}
       <Alert
         variant="error"
         message="予期しないエラーが発生しました"
