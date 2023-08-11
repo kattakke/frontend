@@ -1,8 +1,8 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
-import { AuthContext } from '~/context/AuthProvider'
-import apiClient from '~/util/apiClient.ts'
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
+import { AuthContext } from '~/context/AuthProvider'
 import { type User } from '~/types'
+import apiClient from '~/util/apiClient.ts'
 
 export interface Auth {
   isAuth: boolean
@@ -61,9 +61,12 @@ export const useProvideAuth = (): Auth => {
   )
 
   const logout: Auth['logout'] = useCallback(async () => {
-    await apiClient.auth.logout.$patch().catch((e) => {
-      throw e
-    })
+    if (token === null) throw new Error('not logged in')
+    await apiClient.auth.logout
+      .$patch({ headers: constructAuthHeader(token) })
+      .catch((e) => {
+        throw e
+      })
     setIsAuth(false)
     setToken(null)
     setUser(null)
@@ -73,13 +76,19 @@ export const useProvideAuth = (): Auth => {
   const autoLogin: Auth['autoLogin'] = useCallback(async () => {
     const newToken = localStorage.getItem(LS_TOKEN_KEY)
     if (newToken == null) throw new Error('token not found')
-    const newUser = await apiClient.auth.me.$get({
-      headers: constructAuthHeader(newToken),
-    })
-    setIsAuth(true)
-    setToken(newToken)
-    setUser(newUser)
-    localStorage.setItem(LS_TOKEN_KEY, newToken)
+    await apiClient.auth.me
+      .$get({
+        headers: constructAuthHeader(newToken),
+      })
+      .then((newUser) => {
+        setIsAuth(true)
+        setToken(newToken)
+        setUser(newUser)
+      })
+      .catch(() => {
+        localStorage.removeItem(LS_TOKEN_KEY)
+        throw new Error('invalid token')
+      })
   }, [])
 
   const getAuthHeader: Auth['getAuthHeader'] = useCallback(() => {

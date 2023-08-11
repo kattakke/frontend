@@ -17,6 +17,8 @@ const Search: FC = () => {
     }
   )
 
+  console.log(books)
+
   return (
     <div className="mb-20">
       <div className="flex items-center justify-between">
@@ -35,7 +37,7 @@ const Search: FC = () => {
         {books?.map((book) => (
           <BookDetail
             id={book.bookId}
-            imagePath={undefined}
+            imagePath={book.imagePath}
             title={book.title}
             author={book.author}
             key={book.bookId}
