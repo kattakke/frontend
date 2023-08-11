@@ -21,6 +21,7 @@ const Login: FC = () => {
   const { login, autoLogin } = useAuth()
 
   useEffect(() => {
+    console.log('start auto login')
     void autoLogin().then(() => {
       navigateAfterLogin(searchParams, navigate)
     })
