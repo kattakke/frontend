@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithoutRef, FC } from 'react'
+import { type ComponentPropsWithoutRef, type FC } from 'react'
 
 type Props = {
   color?: 'main' | 'accent'

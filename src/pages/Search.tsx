@@ -1,38 +1,46 @@
-import React, { useState } from 'react'
+import { type FC, useState } from 'react'
 import { HiOutlineSearch } from 'react-icons/hi'
 import BookDetail from '../components/BookDetail'
 import TextField from '../components/TextField'
-import { useBooks } from '../hooks/useBook'
+import useAspidaSWR from '@aspida/swr'
+import apiClient from '~/util/apiClient.ts'
+import { useAuth, useRequireLogin } from '~/hooks/useAuth.ts'
 
-const Search = () => {
-  const [word, setWord] = useState('')
-  const datas = useBooks([])
+const Search: FC = () => {
+  useRequireLogin()
+  const [title, setTitle] = useState('')
+  const { getUser } = useAuth()
+  const { data: books } = useAspidaSWR(
+    apiClient.users._userId(getUser().userId ?? '').shelf,
+    {
+      query: { title },
+    }
+  )
 
   return (
-    <div>
+    <div className="mb-20">
       <div className="flex items-center justify-between">
         <TextField
           className="w-full"
-          onChange={(e) => setWord(e.target.value)}
+          onChange={(e) => {
+            setTitle(e.target.value)
+          }}
         />
-        <HiOutlineSearch className="h-8 w-8 mx-3" />
+        <HiOutlineSearch className="mx-3 h-8 w-8" />
       </div>
       {/* <div className="flex items-center justify-center h-20 mt-4 bg-white border">
         <p>タグ検索とかジャンル検索とか</p>
       </div> */}
-      <div className="grid grid-cols-2 gap-4 mt-8">
-        {datas.map(
-          (book) =>
-            (book.data.title + book.data.author).search(word) != -1 && (
-              <BookDetail
-                id={book.data.bookId}
-                imagePath={undefined}
-                title={book.data.title}
-                author={book.data.author}
-                key={book.data.bookId}
-              />
-            )
-        )}
+      <div className="mt-8 grid grid-cols-2 gap-4">
+        {books?.map((book) => (
+          <BookDetail
+            id={book.bookId}
+            imagePath={undefined}
+            title={book.title}
+            author={book.author}
+            key={book.bookId}
+          />
+        ))}
       </div>
     </div>
   )

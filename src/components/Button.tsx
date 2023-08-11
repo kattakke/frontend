@@ -1,4 +1,4 @@
-import React, { ComponentPropsWithoutRef, FC, ReactNode } from 'react'
+import { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react'
 
 type Props = {
   children?: ReactNode

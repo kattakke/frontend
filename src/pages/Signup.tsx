@@ -1,16 +1,13 @@
 import { type FC } from 'react'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
-import { useRequireLogin } from '~/hooks/useAuth.ts'
 
-const Setting: FC = () => {
-  useRequireLogin()
-
+const Signup: FC = () => {
   return (
-    <div className="pt-10 sm:pt-5">
-      <div className="rounded-3xl bg-white p-8 sm:p-5 shadow-md sm:h-[500px] sm:overflow-y-scroll">
-        <h1 className="pb-6 text-center text-xl">プロフィールを変更</h1>
-        <div className="space-y-2 pb-6">
+    <div className="py-8">
+      <div className="flex-col items-center justify-center space-y-6 rounded-3xl bg-white px-6 py-8 shadow-md">
+        <h1 className="text-center text-xl">会員登録</h1>
+        <div className="flex-col space-y-2">
           <p className="font-light">名前</p>
           <div className="flex">
             <TextField
@@ -21,7 +18,7 @@ const Setting: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="space-y-2 pb-6">
+        <div className="flex-col space-y-2">
           <p className="font-light">メールアドレス</p>
           <div className="flex">
             <TextField
@@ -31,7 +28,7 @@ const Setting: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="space-y-2 pb-6">
+        <div className="flex-col space-y-2">
           <p className="font-light">パスワード</p>
           <div className="flex">
             <TextField
@@ -41,7 +38,7 @@ const Setting: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="space-y-2 border-b pb-6">
+        <div className="flex-col space-y-2 pb-6">
           <p className="font-light">パスワード再入力</p>
           <div className="flex">
             <TextField
@@ -51,25 +48,12 @@ const Setting: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="pb-12 pt-6">
-          <div className="space-y-2">
-            <div className="flex justify-between">
-              <p className="font-light">現在のパスワード</p>
-              <p className="mt-auto text-xs text-red">※入力必須</p>
-            </div>
-            <div className="flex">
-              <TextField
-                className="flex-auto font-medium"
-                placeholder="6文字以上で入力"
-                type="password"
-              ></TextField>
-            </div>
-          </div>
+        <div className="flex items-center justify-center pb-5">
+          <Button>登録</Button>
         </div>
-        <Button className="w-full">保存</Button>
       </div>
     </div>
   )
 }
 
-export default Setting
+export default Signup

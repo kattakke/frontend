@@ -1,101 +1,162 @@
-import React, { useState } from 'react'
+import useAspidaSWR from '@aspida/swr'
+import { useState, type FC } from 'react'
+import Alert from '~/components/Alert'
+import { useAuth, useRequireLogin } from '~/hooks/useAuth'
+import apiClient from '~/util/apiClient.ts'
+import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
+import Scanner from '../components/Scanner'
 import TextField from '../components/TextField'
-import { useSearch } from '../hooks/useSearch'
 
-const Register = () => {
-  const [title, setTitle] = useState([])
-  const [author, setAuthor] = useState('')
+const Register: FC = () => {
+  useRequireLogin()
+  const { getAuthHeader } = useAuth()
+  const [title, setTitle] = useState<string>('')
+  const [, setAuthor] = useState('')
   const [isbn, setIsbn] = useState('')
   const [isCameraOn, setIsCameraOn] = useState(false)
-  const books = useSearch({ title, author, isbn })
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
 
-  const onAddBook = () => {}
+  const { data: books } = useAspidaSWR(apiClient.search, {
+    query: { title, isbn },
+  })
+
+  const onAddBook = (
+    addedIsbn?: string,
+    addedTitle?: string,
+    addedAuthor?: string,
+    addedImagePath?: string
+  ): void => {
+    apiClient.books
+      .$post({
+        headers: getAuthHeader(),
+        body: {
+          isbn: addedIsbn,
+          title: addedTitle,
+          author: addedAuthor,
+          imagePath: addedImagePath,
+        },
+      })
+      .then((res) => {
+        console.log(res)
+        setAlertMessage(`『${res.title ?? ''}』を追加しました`)
+        setAlertOpen(true)
+      })
+      .catch((err) => {
+        console.log(err)
+        setAlertMessage('エラーが発生しました')
+        setAlertOpen(true)
+      })
+  }
 
   return (
     <div className="pt-3">
-      <div className="bg-white rounded-3xl px-5 py-8 flex-col items-center justify-center shadow-md space-y-6 relative">
+      <div className="mb-20 space-y-6 rounded-3xl bg-white px-5 py-8 shadow-md">
         <h1 className="text-center text-lg">本棚に本を追加</h1>
-        <div className="flex-col space-y-1">
-          <p className="font-light text-sm">本のタイトル</p>
+        <div className="space-y-1">
+          <p className="text-sm font-light">本のタイトル</p>
           <div className="flex">
             <TextField
               className="flex-auto font-medium"
               type="text"
-              onChange={(e) => setTitle(e.target.value.split(/\s/))}
-            ></TextField>
+              onChange={(e) => {
+                setTitle(e.target.value)
+              }}
+            />
           </div>
         </div>
-        <div className="flex-col space-y-1">
-          <p className="font-light text-sm">ISBN</p>
+        <div className="space-y-1">
+          <p className="text-sm font-light">著者名</p>
           <div className="flex">
             <TextField
-              className="flex-auto font-medium"
-              type="text"
-              onChange={(e) => setIsbn(e.target.value)}
-            ></TextField>
-          </div>
-        </div>
-        <div className="flex-col space-y-1">
-          <p className="font-light text-sm">著者名</p>
-          <div className="flex">
-            <TextField
-              className="flex-auto w-full font-medium"
+              className="w-full flex-auto font-medium"
               placeholder=""
               type="text"
-              onChange={(e) => setAuthor(e.target.value)}
-            ></TextField>
+              onChange={(e) => {
+                setAuthor(e.target.value)
+              }}
+            />
           </div>
-          {/* <div className="w-1/2 pl-2">
-            <div className="flex-col space-y-1 w-full">
-              <p className="font-light text-sm">出版社名</p>
-              <div className="flex">
-                <TextField
-                  className="flex-auto  w-full font-medium"
-                  placeholder=""
-                  type="text"
-                ></TextField>
-              </div>
-            </div>
-          </div> */}
         </div>
-        <div className="flex flex-col space-y-2">
-          {books.map((book) => (
-            <div key={book.bookId} className="flex justify-between space-x-2">
-              <div>
-                <p className="text-md">{book.title}</p>
-                <p className="text-sm">{book.author}</p>
-              </div>
-              <Button
-                className="w-20 shrink-0 grow-0"
-                onClick={() => onAddBook()}
-              >
-                追加
-              </Button>
-            </div>
-          ))}
+        <div className="space-y-1">
+          <p className="text-sm font-light">ISBN</p>
+          <div className="flex">
+            <TextField
+              className="flex-auto font-medium"
+              type="text"
+              onChange={(e) => {
+                setIsbn(e.target.value)
+              }}
+              value={isbn}
+            />
+          </div>
         </div>
-
-        <div className="pt-8">
+        <div>
           <Button
-            className="w-full mb-3"
+            className="mb-3 w-full"
             color="accent"
-            onClick={() => setIsCameraOn(true)}
+            onClick={() => {
+              setIsCameraOn(true)
+            }}
           >
             バーコードから自動入力
           </Button>
         </div>
 
-        {/* 後でコメントイン */}
+        {books !== undefined && (
+          <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-12">
+            {books?.map((book) => (
+              <div key={book.isbn} className="flex flex-col justify-between">
+                <BookDetail
+                  title={book.title}
+                  author={book.author}
+                  imagePath={book.imagePath}
+                />
+                <Button
+                  className="mt-2 w-full"
+                  onClick={() => {
+                    onAddBook(
+                      book.isbn ?? '',
+                      book.title,
+                      book.author ?? '',
+                      book.imagePath
+                    )
+                  }}
+                >
+                  追加
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
 
-        {/* {isCameraOn && (
-          <Scanner
-            onDetected={() => {
-              setIsCameraOn(false)
-            }}
-            className='absolute left-0 right-0 top-0'
-          />
-        )} */}
+        <Alert
+          variant="success"
+          open={alertOpen}
+          onOpenChange={setAlertOpen}
+          message={alertMessage}
+        />
+
+        {isCameraOn && (
+          <>
+            <Scanner
+              onDetected={(code) => {
+                setIsbn(code)
+              }}
+              onVideoOff={() => {
+                setIsCameraOn(false)
+              }}
+              className="absolute inset-0 z-modal !m-auto h-fit w-[95%]"
+            />
+            <div
+              className="absolute left-0 top-0 z-modal-overlay !mt-0 h-screen w-screen bg-gray/50"
+              onClick={() => {
+                setIsCameraOn(false)
+              }}
+            />
+          </>
+        )}
       </div>
     </div>
   )

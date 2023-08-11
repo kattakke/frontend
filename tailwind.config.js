@@ -10,6 +10,12 @@ export default {
       gray: '#CCCCCC',
       red: '#FF0000',
       black: '#444444',
+      success: '#28753C',
+      info: '#2E5AAC',
+      warning: '#B98000',
+      error: '#DA1414',
+      logout: '#FF5047',
+      transparent: 'transparent',
     },
     fontSize: {
       xs: '12px',
@@ -20,12 +26,27 @@ export default {
     },
     extend: {
       zIndex: {
-        overlay: "20",
+        overlay: '20',
         header: '30',
         'header-button': '40',
+        'modal-overlay': '50',
+        modal: '60',
+        alert: '70',
       },
       backgroundImage: {
-        'book-shelf': "url('/book-shelf.jpg')"
+        'book-shelf': "url('/book-shelf.jpg')",
+      },
+      screens: {
+        sm: { max: '380px' },
+      },
+      height: {
+        screen: ['100vh', '100dvh'],
+      },
+      minHeight: {
+        screen: ['100vh', '100dvh'],
+      },
+      maxHeight: {
+        screen: ['100vh', '100dvh'],
       },
     },
   },

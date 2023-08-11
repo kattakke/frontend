@@ -1,79 +1,113 @@
-import { fakerJA } from '@faker-js/faker'
-import { useContext, useState } from 'react'
-import useSWR from 'swr'
-import { AuthContext } from '../context/AuthProvider'
-import { User } from '../types'
-import { getFetcher, patchFetcher, postFetcher } from '../util/fetcher'
+import { useCallback, useContext, useEffect, useState } from 'react'
+import { AuthContext } from '~/context/AuthProvider'
+import apiClient from '~/util/apiClient.ts'
+import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
+import { type User } from '~/types'
 
-const mockUser = (userId: string = fakerJA.string.uuid()): User => {
-  const user = { userId: userId }
-  return user
+export interface Auth {
+  isAuth: boolean
+  login: (email: string, password: string) => Promise<void>
+  signup: (email: string, password: string) => Promise<void>
+  logout: () => Promise<void>
+  autoLogin: () => Promise<void>
+  getAuthHeader: () => { Authorization: string }
+  getUser: () => User
 }
 
-export const useUser = (userId: string): User => {
-  if (import.meta.env.VITE_MOCK) {
-    return mockUser(userId)
-  } else {
-    return {}
-  }
-}
-
-export const useAuth = () => {
+export const useAuth = (): Auth => {
   return useContext(AuthContext)
 }
 
-export const useProvideAuth = () => {
+const constructAuthHeader = (token: string): { Authorization: string } => ({
+  Authorization: `Bearer ${token}`,
+})
+
+const LS_TOKEN_KEY = 'token'
+
+export const useProvideAuth = (): Auth => {
   const [isAuth, setIsAuth] = useState(false)
-  const login = (email: string, password: string) => {
-    const { data, error, isLoading } = useSWR(
-      { url: '/auth/login', params: { id: email, password: password } },
-      getFetcher
-    )
-    if (error) {
-      throw error
-    }
-    
-    // call setIsAuth(true)
-    // set localStrage
-  }
+  const [user, setUser] = useState<User | null>(null)
+  const [token, setToken] = useState<string | null>(null)
 
-  const signup = (email: string, password: string) => {
-    const { data, error, isLoading } = useSWR(
-      { url: '/users', params: { id: email, password: password } },
-      postFetcher
-    )
-    if (error) {
-      throw error
-    }
+  const login: Auth['login'] = useCallback(async (email, password) => {
+    const newToken = await apiClient.auth.login
+      .$post({ body: { id: email, password } })
+      .catch(() => {
+        throw new Error('Invalid credential')
+      })
+    const newUser = await apiClient.auth.me
+      .$get({
+        headers: constructAuthHeader(newToken),
+      })
+      .catch(() => {
+        throw new Error('Invalid auth token')
+      })
+    setIsAuth(true)
+    setToken(newToken)
+    setUser(newUser)
+    localStorage.setItem(LS_TOKEN_KEY, newToken)
+  }, [])
 
-    // call setIsAuth(true)
-    // set localStrage
-  }
+  const signup: Auth['signup'] = useCallback(
+    async (email, password) => {
+      await apiClient.users
+        .$post({ body: { id: email, password } })
+        .catch(() => {
+          throw new Error('Invalid signup credential')
+        })
+      await login(email, password)
+    },
+    [login]
+  )
 
-  const logout = () => {
-    const { data, error, isLoading } = useSWR(
-      { url: '/auth/logout' },
-      patchFetcher
-    )
-    if (error) {
-      throw error
-    }
+  const logout: Auth['logout'] = useCallback(async () => {
+    await apiClient.auth.logout.$patch().catch((e) => {
+      throw e
+    })
+    setIsAuth(false)
+    setToken(null)
+    setUser(null)
+    localStorage.removeItem(LS_TOKEN_KEY)
+  }, [])
 
-    // call setIsAuth(false)
-    // delete localStrage
-  }
+  const autoLogin: Auth['autoLogin'] = useCallback(async () => {
+    const newToken = localStorage.getItem(LS_TOKEN_KEY)
+    if (newToken == null) throw new Error('token not found')
+    const newUser = await apiClient.auth.me.$get({
+      headers: constructAuthHeader(newToken),
+    })
+    setIsAuth(true)
+    setToken(newToken)
+    setUser(newUser)
+    localStorage.setItem(LS_TOKEN_KEY, newToken)
+  }, [])
 
-  const autoLogin = () => {
+  const getAuthHeader: Auth['getAuthHeader'] = useCallback(() => {
+    if (token === null) throw new Error('not logged in')
+    return constructAuthHeader(token)
+  }, [token])
 
-    // read localStrage
+  const getUser: Auth['getUser'] = useCallback(() => {
+    if (user === null) throw new Error('not logged in')
+    return user
+  }, [user])
 
-    const { data, error, isLoading } = useSWR({ url: '/auth/me' }, getFetcher)
-    if (error) {
-      throw error
-    }
+  return { isAuth, login, signup, logout, autoLogin, getAuthHeader, getUser }
+}
 
-    // call setIsAuth(true)
-  }
-
-  return { isAuth, login, signup, logout, autoLogin }
+export const useRequireLogin = (): void => {
+  const { isAuth, autoLogin } = useAuth()
+  const location = useLocation()
+  const navigate = useNavigate()
+  useEffect(() => {
+    if (!isAuth)
+      void autoLogin().catch(() => {
+        navigate({
+          pathname: '/login',
+          search: `?${createSearchParams({
+            to: location.pathname,
+          }).toString()}`,
+        })
+      })
+  }, [autoLogin, isAuth, location.pathname, navigate])
 }
