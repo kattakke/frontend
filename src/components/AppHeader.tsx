@@ -7,12 +7,23 @@ import {
   HiOutlineSearch,
 } from 'react-icons/hi'
 import { RxCross2, RxHamburgerMenu } from 'react-icons/rx'
-import { Link } from 'react-router-dom'
-// import { useAuth } from '../hooks/useAuth'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
 const AppHeader: FC = () => {
   const [open, setOpen] = useState(false)
-  // const { logout } = useAuth()
+  const { logout } = useAuth()
+  const navigate = useNavigate()
+
+  const submitLogout = (): void => {
+    logout()
+      .then(() => {
+        navigate('/')
+      })
+      .catch((e) => {
+        throw e
+      })
+  }
 
   return (
     <div className="flex h-20 items-center justify-between pl-3 pr-5 text-white">
@@ -84,7 +95,10 @@ const AppHeader: FC = () => {
             <HiOutlineCog className="h-6 w-6" />
             <p className="text-lg">設定</p>
           </Link>
-          <div className="flex w-fit items-center space-x-2 text-logout">
+          <div
+            className="flex w-fit items-center space-x-2 text-logout"
+            onClick={submitLogout}
+          >
             <HiOutlineLogout className="h-6 w-6" />
             <p className="text-lg">ログアウト</p>
           </div>
