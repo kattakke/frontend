@@ -71,7 +71,7 @@ export const useProvideAuth = (): Auth => {
     setToken(null)
     setUser(null)
     localStorage.removeItem(LS_TOKEN_KEY)
-  }, [])
+  }, [token])
 
   const autoLogin: Auth['autoLogin'] = useCallback(async () => {
     const newToken = localStorage.getItem(LS_TOKEN_KEY)
