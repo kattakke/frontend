@@ -1,16 +1,31 @@
 import { type ComponentPropsWithoutRef, type FC, type ReactNode } from 'react'
 
+type Color = 'main' | 'accent'
+type Variant = 'solid' | 'outline'
+
 type Props = {
   children?: ReactNode
-  color?: 'main' | 'accent'
+  color?: Color
+  variant?: Variant
   gradation?: boolean
   disabled?: boolean
   className?: string
 } & ComponentPropsWithoutRef<'button'>
 
+const constructColorStyle = (color: Color, variant: Variant): string[] => {
+  return [
+    { solid: `bg-${color}`, outline: `border-${color}` }[variant],
+    ...{
+      solid: ['text-white'],
+      outline: [`text-${color}`, 'bg-white/80', 'border-[3px]'],
+    }[variant],
+  ]
+}
+
 const Button: FC<Props> = ({
   children,
   color = 'main',
+  variant = 'solid',
   gradation = false,
   disabled = false,
   className,
@@ -33,15 +48,11 @@ const Button: FC<Props> = ({
       </button>
     )
   } else {
-    const colorStyle = {
-      main: 'bg-main',
-      accent: 'bg-accent',
-    }
     return (
       <button
         className={[
-          'text-white rounded-lg h-[36px] w-[140px]',
-          colorStyle[color],
+          'rounded-lg font-bold h-[36px] w-[140px]',
+          ...constructColorStyle(color, variant),
           className,
         ].join(' ')}
         disabled={disabled}
