@@ -1,4 +1,3 @@
-import useAspidaSWR from '@aspida/swr'
 import { useState, type FC } from 'react'
 import Alert from '~/components/Alert'
 import { useAuth, useRequireLogin } from '~/hooks/useAuth'
@@ -7,6 +6,7 @@ import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
 import Scanner from '../components/Scanner'
 import TextField from '../components/TextField'
+import { type Book } from '~/api/@types'
 
 const Register: FC = () => {
   useRequireLogin()
@@ -16,12 +16,24 @@ const Register: FC = () => {
   const [isbn, setIsbn] = useState('')
   const [isCameraOn, setIsCameraOn] = useState(false)
   const [alertOpen, setAlertOpen] = useState(false)
-  const [alertVariant, setAlertVariant] = useState<"success" | "error">("success")
+  const [alertVariant, setAlertVariant] = useState<'success' | 'error'>(
+    'success'
+  )
   const [alertMessage, setAlertMessage] = useState('')
+  const [books, setBooks] = useState<Book[]>([])
+  const [beforeQuery, setBeforeQuery] = useState<{
+    title: string
+    isbn: string
+  }>({ title, isbn })
 
-  const { data: books } = useAspidaSWR(apiClient.search, {
-    query: { title, isbn },
-  })
+  const onSearchBooks = (): void => {
+    if (beforeQuery.title !== title || beforeQuery.isbn !== isbn) {
+      void apiClient.search.$get({ query: { title, isbn } }).then((_books) => {
+        setBooks(_books)
+      })
+      setBeforeQuery({ title, isbn })
+    }
+  }
 
   const onAddBook = (
     addedIsbn?: string,
@@ -42,13 +54,13 @@ const Register: FC = () => {
       .then((res) => {
         console.log(res)
         setAlertMessage(`『${res.title ?? ''}』を追加しました`)
-        setAlertVariant("success")
+        setAlertVariant('success')
         setAlertOpen(true)
       })
       .catch((err) => {
         console.log(err)
         setAlertMessage('エラーが発生しました')
-        setAlertVariant("error")
+        setAlertVariant('error')
         setAlertOpen(true)
       })
   }
@@ -66,6 +78,9 @@ const Register: FC = () => {
               onChange={(e) => {
                 setTitle(e.target.value)
               }}
+              onBlur={() => {
+                onSearchBooks()
+              }}
             />
           </div>
         </div>
@@ -78,6 +93,9 @@ const Register: FC = () => {
               type="text"
               onChange={(e) => {
                 setAuthor(e.target.value)
+              }}
+              onBlur={() => {
+                onSearchBooks()
               }}
             />
           </div>
@@ -92,6 +110,9 @@ const Register: FC = () => {
                 setIsbn(e.target.value)
               }}
               value={isbn}
+              onBlur={() => {
+                onSearchBooks()
+              }}
             />
           </div>
         </div>
