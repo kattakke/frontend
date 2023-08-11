@@ -1,10 +1,9 @@
 import { useState, type FC } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Alert from '~/components/Alert'
 import { useAuth } from '~/hooks/useAuth'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
-import { Link } from 'react-router-dom'
 
 const Signup: FC = () => {
   const [email, setEmail] = useState('')
@@ -31,12 +30,14 @@ const Signup: FC = () => {
         navigate('/home')
       })
       .catch((e) => {
+        setAlertMessage("登録に失敗しました")
+        setAlertOpen(true)
         throw e
       })
   }
 
   return (
-    <div className="py-8">
+    <div>
       <div className="flex-col items-center justify-center space-y-6 rounded-3xl bg-white px-6 py-8 shadow-md">
         <h1 className="text-center text-xl">新規登録</h1>
         {/* <div className="flex-col space-y-2">
@@ -78,7 +79,7 @@ const Signup: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="flex-col space-y-2 pb-6">
+        <div className="flex-col space-y-2">
           <p className="font-light">パスワード再入力</p>
           <div className="flex">
             <TextField
@@ -92,7 +93,7 @@ const Signup: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center pb-5">
+        <div className="mt-6 flex flex-col items-center justify-center pb-5">
           <Button className="mb-3" onClick={onSignup}>
             登録
           </Button>
@@ -102,13 +103,13 @@ const Signup: FC = () => {
             </p>
           </Link>
         </div>
-        <Alert
-          open={alertOpen}
-          message={alertMessage}
-          variant="error"
-          onOpenChange={setAlertOpen}
-        />
       </div>
+      <Alert
+        open={alertOpen}
+        message={alertMessage}
+        variant="error"
+        onOpenChange={setAlertOpen}
+      />
     </div>
   )
 }

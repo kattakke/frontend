@@ -1,9 +1,10 @@
-import { type FC, useEffect, useState } from 'react'
+import { useEffect, useState, type FC } from 'react'
+import { type NavigateFunction } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import Button from '../components/Button'
 import TextField from '../components/TextField'
 import { useAuth } from '../hooks/useAuth'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { type NavigateFunction } from 'react-router'
+import Alert from '~/components/Alert'
 
 const navigateAfterLogin = (
   searchParams: URLSearchParams,
@@ -18,6 +19,8 @@ const Login: FC = () => {
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertMessage, setAlertMessage] = useState("")
   const { login, autoLogin } = useAuth()
 
   useEffect(() => {
@@ -33,13 +36,16 @@ const Login: FC = () => {
         navigateAfterLogin(searchParams, navigate)
       })
       .catch((e) => {
+        setAlertMessage("ログインに失敗しました")
+        setAlertOpen(true)
         throw e
       })
   }
 
   return (
-    <div className="py-32">
-      <div className="flex-col items-center justify-center space-y-12 rounded-3xl bg-white px-8 py-16 shadow-md">
+    <div>
+      <div className="flex-col items-center justify-center space-y-6 rounded-3xl bg-white px-6 py-8 shadow-md">
+        <h1 className="text-center text-xl">ログイン</h1>
         <div className="flex-col space-y-2">
           <p className="font-light">メールアドレス</p>
           <div className="flex">
@@ -68,7 +74,7 @@ const Login: FC = () => {
             ></TextField>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center">
+        <div className="mt-6 flex flex-col items-center justify-center pb-5">
           <Button className="mb-3" onClick={submitLogin}>
             ログイン
           </Button>
@@ -79,6 +85,12 @@ const Login: FC = () => {
           </Link>
         </div>
       </div>
+      <Alert
+        open={alertOpen}
+        message={alertMessage}
+        variant="error"
+        onOpenChange={setAlertOpen}
+      />
     </div>
   )
 }
