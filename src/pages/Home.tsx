@@ -3,21 +3,21 @@ import { HiOutlinePlus, HiOutlineSearch } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
-import { useBooks } from '../hooks/useBook'
+import { type Book } from '~/types'
 
 const Home: FC = () => {
-  const datas = useBooks([], 'desc')
+  const recentBooks: Book[] = []
 
   return (
     <div>
       <p className="text-xl font-bold">最近登録した本</p>
       <div className="mt-8 grid grid-cols-2 gap-4">
-        {datas.slice(0, 4).map((book) => (
+        {recentBooks.slice(0, 4).map((book) => (
           <BookDetail
-            id={book.data.bookId}
-            title={book.data.title}
-            author={book.data.author}
-            key={book.data.bookId}
+            id={book.bookId}
+            title={book.title}
+            author={book.author}
+            key={book.bookId}
           />
         ))}
       </div>

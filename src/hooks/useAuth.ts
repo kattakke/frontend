@@ -1,87 +1,70 @@
 import { useCallback, useContext, useState } from 'react'
-import { fakerJA } from '@faker-js/faker'
-import useSWR from 'swr'
-import { AuthContext } from '../context/AuthProvider'
-import { type User } from '../types'
-import { getFetcher, patchFetcher, postFetcher } from '../util/fetcher'
+import { AuthContext } from '~/context/AuthProvider'
+import apiClient from '~/util/apiClient.ts'
 
 export interface Auth {
   isAuth: boolean
-  login: (email: string, password: string) => void
-  signup: (email: string, password: string) => void
-  logout: () => void
-  autoLogin: () => void
-}
-
-const mockUser = (userId: string = fakerJA.string.uuid()): User => {
-  const user = { userId }
-  return user
-}
-
-export const useUser = (userId: string): User => {
-  if (import.meta.env.VITE_MOCK) {
-    return mockUser(userId)
-  } else {
-    return {}
-  }
+  login: (email: string, password: string) => Promise<void>
+  signup: (email: string, password: string) => Promise<void>
+  logout: () => Promise<void>
+  autoLogin: () => Promise<void>
+  getAuthHeader: () => { Authorization: string }
 }
 
 export const useAuth = (): Auth => {
   return useContext(AuthContext)
 }
 
+const LS_TOKEN_KEY = 'token'
+
 export const useProvideAuth = (): Auth => {
   const [isAuth, setIsAuth] = useState(false)
+  const [token, setToken] = useState<string | null>(null)
 
-  const login: Auth['login'] = useCallback((email, password) => {
-    const { data, error, isLoading } = useSWR(
-      { url: '/auth/login', params: { id: email, password } },
-      getFetcher
-    )
-    if (error) {
-      throw error
-    }
-
-    // call setIsAuth(true)
-    // set localStrage
+  const login: Auth['login'] = useCallback(async (email, password) => {
+    const newToken = await apiClient.auth.login
+      .$post({ body: { id: email, password } })
+      .catch((e) => {
+        throw e
+      })
+    setIsAuth(true)
+    setToken(newToken)
+    localStorage.setItem(LS_TOKEN_KEY, newToken)
   }, [])
 
-  const signup: Auth['signup'] = (email, password) => {
-    const { data, error, isLoading } = useSWR(
-      { url: '/users', params: { id: email, password } },
-      postFetcher
-    )
-    if (error) {
-      throw error
-    }
-
-    // call setIsAuth(true)
-    // set localStrage
+  const signup: Auth['signup'] = async (email, password) => {
+    await apiClient.users
+      .$post({ body: { id: email, password } })
+      .catch((e) => {
+        throw e
+      })
+    await login(email, password)
   }
 
-  const logout: Auth['logout'] = () => {
-    const { data, error, isLoading } = useSWR(
-      { url: '/auth/logout' },
-      patchFetcher
-    )
-    if (error) {
-      throw error
-    }
-
-    // call setIsAuth(false)
-    // delete localStrage
+  const logout: Auth['logout'] = async () => {
+    await apiClient.auth.logout.$patch().catch((e) => {
+      throw e
+    })
+    setIsAuth(false)
+    setToken(null)
+    localStorage.removeItem(LS_TOKEN_KEY)
   }
 
-  const autoLogin: Auth['autoLogin'] = () => {
-    // read localStrage
-
-    const { data, error, isLoading } = useSWR({ url: '/auth/me' }, getFetcher)
-    if (error) {
-      throw error
+  const autoLogin: Auth['autoLogin'] = async () => {
+    const token = localStorage.getItem(LS_TOKEN_KEY)
+    if (token !== null) {
+      await apiClient.auth.me.$get({
+        headers: {
+          ...getAuthHeader(),
+        },
+      })
     }
-
-    // call setIsAuth(true)
   }
 
-  return { isAuth, login, signup, logout, autoLogin }
+  const getAuthHeader: Auth['getAuthHeader'] = () => {
+    if (token === null) throw new Error('not logged in')
+    return { Authorization: `Bearer ${token}` }
+  }
+
+  return { isAuth, login, signup, logout, autoLogin, getAuthHeader }
 }

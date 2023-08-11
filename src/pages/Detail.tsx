@@ -1,5 +1,6 @@
-import { type FC } from 'react'
+import { useState, type FC } from 'react'
 import { useParams } from 'react-router-dom'
+import Alert from '../components/Alert'
 import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
 import Image from '../components/Image'
@@ -13,6 +14,7 @@ const Detail: FC = () => {
   const urlParams: ParamsType = useParams()
   const { data: book } = useBook(urlParams.id)
   const relatedBooks = useBooks([])
+  const [open, setOpen] = useState(false)
 
   return (
     <div className="overflow-hidden">
@@ -46,7 +48,13 @@ const Detail: FC = () => {
             </tr>
           </tbody>
         </table>
-        <Button color="accent" className="mt-4 w-full">
+        <Button
+          color="accent"
+          className="mt-4 w-full"
+          onClick={() => {
+            setOpen(true)
+          }}
+        >
           本棚から削除
         </Button>
       </div>
@@ -64,6 +72,7 @@ const Detail: FC = () => {
           ))}
         </div>
       </div>
+      <Alert variant="error" message='予期しないエラーが発生しました' open={open} onOpenChange={setOpen} />
     </div>
   )
 }

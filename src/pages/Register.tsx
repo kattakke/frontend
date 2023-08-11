@@ -3,14 +3,17 @@ import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
 import Scanner from '../components/Scanner'
 import TextField from '../components/TextField'
-import { useSearch } from '../hooks/useSearch'
+import useAspidaSWR from '@aspida/swr'
+import apiClient from '~/util/apiClient.ts'
 
 const Register: FC = () => {
-  const [title, setTitle] = useState<string[]>([])
+  const [title, setTitle] = useState<string>('')
   const [author, setAuthor] = useState('')
   const [isbn, setIsbn] = useState('')
   const [isCameraOn, setIsCameraOn] = useState(false)
-  const books = useSearch({ title, author, isbn })
+  const { data: books } = useAspidaSWR(apiClient.search, {
+    query: { title, isbn },
+  })
 
   const onAddBook = (): void => {}
 
@@ -25,7 +28,7 @@ const Register: FC = () => {
               className="flex-auto font-medium"
               type="text"
               onChange={(e) => {
-                setTitle(e.target.value.split(/\s/))
+                setTitle(e.target.value)
               }}
             />
           </div>
@@ -68,7 +71,7 @@ const Register: FC = () => {
           </Button>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-12">
-          {books.map((book) => (
+          {books?.map((book) => (
             <div key={book.bookId} className="flex flex-col justify-between">
               <BookDetail
                 id={book.bookId}
