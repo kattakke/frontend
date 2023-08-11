@@ -85,8 +85,8 @@ const AppHeader: FC = () => {
             <p className="text-lg">設定</p>
           </Link>
           <div className="flex w-fit items-center space-x-2">
-            <HiOutlineLogout className="h-6 w-6" color={"#DA1414"} />
-            <p className="text-lg">ログアウト</p>
+            <HiOutlineLogout className="h-6 w-6" />
+            <p className="text-lg text-error">ログアウト</p>
           </div>
         </div>
       </div>
