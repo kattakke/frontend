@@ -1,21 +1,44 @@
+import useAspidaSWR from '@aspida/swr'
 import { useState, type FC } from 'react'
+import Alert from '~/components/Alert'
+import apiClient from '~/util/apiClient.ts'
 import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
 import Scanner from '../components/Scanner'
 import TextField from '../components/TextField'
-import useAspidaSWR from '@aspida/swr'
-import apiClient from '~/util/apiClient.ts'
 
 const Register: FC = () => {
   const [title, setTitle] = useState<string>('')
   const [author, setAuthor] = useState('')
   const [isbn, setIsbn] = useState('')
   const [isCameraOn, setIsCameraOn] = useState(false)
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
+
   const { data: books } = useAspidaSWR(apiClient.search, {
     query: { title, isbn },
   })
 
-  const onAddBook = (): void => {}
+  const onAddBook = (
+    addedIsbn?: string,
+    addedTitle?: string,
+    addedAuthor?: string
+  ): void => {
+    apiClient.books
+      .$post({
+        body: { isbn: addedIsbn, title: addedTitle, author: addedAuthor },
+      })
+      .then((res) => {
+        console.log(res)
+        setAlertMessage(`『${res.title ?? ''}』を追加しました`)
+        setAlertOpen(true)
+      })
+      .catch((err) => {
+        console.log(err)
+        setAlertMessage('エラーが発生しました')
+        setAlertOpen(true)
+      })
+  }
 
   return (
     <div className="pt-3">
@@ -82,7 +105,7 @@ const Register: FC = () => {
               <Button
                 className="mt-2 w-full"
                 onClick={() => {
-                  onAddBook()
+                  onAddBook(book.isbn, book.title, book.author)
                 }}
               >
                 追加
@@ -90,6 +113,13 @@ const Register: FC = () => {
             </div>
           ))}
         </div>
+
+        <Alert
+          variant="success"
+          open={alertOpen}
+          onOpenChange={setAlertOpen}
+          message={alertMessage}
+        />
 
         {isCameraOn && (
           <>
