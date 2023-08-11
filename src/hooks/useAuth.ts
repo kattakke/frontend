@@ -1,8 +1,8 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
-import { AuthContext } from '~/context/AuthProvider'
-import apiClient from '~/util/apiClient.ts'
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom'
+import { AuthContext } from '~/context/AuthProvider'
 import { type User } from '~/types'
+import apiClient from '~/util/apiClient.ts'
 
 export interface Auth {
   isAuth: boolean

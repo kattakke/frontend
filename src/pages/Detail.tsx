@@ -1,12 +1,12 @@
+import useAspidaSWR from '@aspida/swr'
 import { useState, type FC } from 'react'
 import { useParams } from 'react-router-dom'
+import Spinner from '~/components/Spinner'
+import { useAuth, useRequireLogin } from '~/hooks/useAuth.ts'
+import apiClient from '~/util/apiClient.ts'
 import Alert from '../components/Alert'
 import Button from '../components/Button'
 import Image from '../components/Image'
-import { useRequireLogin } from '~/hooks/useAuth.ts'
-import useAspidaSWR from '@aspida/swr'
-import apiClient from '~/util/apiClient.ts'
-import Spinner from '~/components/Spinner'
 
 interface ParamsType {
   id?: string
@@ -18,7 +18,31 @@ const Detail: FC = () => {
   const { data: book, isLoading } = useAspidaSWR(
     apiClient.books._bookId(urlParams?.id ?? '')
   )
-  const [open, setOpen] = useState(false)
+  const [alertOpen, setAlertOpen] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
+  const [alertVariant, setAlertVariant] = useState<'success' | 'error'>(
+    'success'
+  )
+  const { getAuthHeader } = useAuth()
+
+  const onDeleteBook = (): void => {
+    apiClient.books
+      ._bookId(urlParams.id ?? '')
+      .$delete({
+        headers: getAuthHeader(),
+      })
+      .then(() => {
+        setAlertMessage(`『${book?.title ?? ''}』を削除しました`)
+        setAlertVariant('success')
+        setAlertOpen(true)
+      })
+      .catch((err) => {
+        console.log(err)
+        setAlertMessage('エラーが発生しました')
+        setAlertVariant('error')
+        setAlertOpen(true)
+      })
+  }
 
   if (book === undefined)
     return isLoading ? (
@@ -35,7 +59,7 @@ const Detail: FC = () => {
     )
 
   return (
-    <div className="overflow-hidden">
+    <div>
       <div className="relative w-full rounded-3xl bg-white p-10 shadow-md">
         <Image src={book.imagePath} className="inset-x-0 mx-auto mb-10" />
         <table className="w-full">
@@ -66,13 +90,7 @@ const Detail: FC = () => {
             </tr>
           </tbody>
         </table>
-        <Button
-          color="accent"
-          className="mt-4 w-full"
-          onClick={() => {
-            setOpen(true)
-          }}
-        >
+        <Button color="accent" className="mt-4 w-full" onClick={onDeleteBook}>
           本棚から削除
         </Button>
       </div>
@@ -91,10 +109,10 @@ const Detail: FC = () => {
         </div>
       </div> */}
       <Alert
-        variant="error"
-        message="予期しないエラーが発生しました"
-        open={open}
-        onOpenChange={setOpen}
+        variant={alertVariant}
+        message={alertMessage}
+        open={alertOpen}
+        onOpenChange={setAlertOpen}
       />
     </div>
   )
