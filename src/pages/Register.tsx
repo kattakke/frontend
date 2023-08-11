@@ -1,6 +1,7 @@
 import useAspidaSWR from '@aspida/swr'
 import { useState, type FC } from 'react'
 import Alert from '~/components/Alert'
+import { useAuth, useRequireLogin } from '~/hooks/useAuth'
 import apiClient from '~/util/apiClient.ts'
 import BookDetail from '../components/BookDetail'
 import Button from '../components/Button'
@@ -8,14 +9,14 @@ import Scanner from '../components/Scanner'
 import TextField from '../components/TextField'
 
 const Register: FC = () => {
+  useRequireLogin()
+  const { getAuthHeader } = useAuth()
   const [title, setTitle] = useState<string>('')
   const [, setAuthor] = useState('')
   const [isbn, setIsbn] = useState('')
   const [isCameraOn, setIsCameraOn] = useState(false)
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState('')
-
-  console.log(author)
 
   const { data: books } = useAspidaSWR(apiClient.search, {
     query: { title, isbn },
@@ -28,6 +29,7 @@ const Register: FC = () => {
   ): void => {
     apiClient.books
       .$post({
+        headers: getAuthHeader(),
         body: { isbn: addedIsbn, title: addedTitle, author: addedAuthor },
       })
       .then((res) => {
@@ -44,7 +46,7 @@ const Register: FC = () => {
 
   return (
     <div className="pt-3">
-      <div className="space-y-6 rounded-3xl bg-white px-5 py-8 mb-20 shadow-md">
+      <div className="mb-20 space-y-6 rounded-3xl bg-white px-5 py-8 shadow-md">
         <h1 className="text-center text-lg">本棚に本を追加</h1>
         <div className="space-y-1">
           <p className="text-sm font-light">本のタイトル</p>
@@ -95,25 +97,28 @@ const Register: FC = () => {
             バーコードから自動入力
           </Button>
         </div>
-        <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-12">
-          {books?.map((book) => (
-            <div key={book.title} className="flex flex-col justify-between">
-              <BookDetail
-                title={book.title}
-                author={book.author}
-                imagePath={book.imagePath}
-              />
-              <Button
-                className="mt-2 w-full"
-                onClick={() => {
-                  onAddBook(book.isbn ?? "", book.title, book.author ?? "")
-                }}
-              >
-                追加
-              </Button>
-            </div>
-          ))}
-        </div>
+
+        {books !== undefined && (
+          <div className="mt-8 grid grid-cols-2 gap-x-4 gap-y-12">
+            {books?.map((book) => (
+              <div key={book.isbn} className="flex flex-col justify-between">
+                <BookDetail
+                  title={book.title}
+                  author={book.author}
+                  imagePath={book.imagePath}
+                />
+                <Button
+                  className="mt-2 w-full"
+                  onClick={() => {
+                    onAddBook(book.isbn ?? '', book.title, book.author ?? '')
+                  }}
+                >
+                  追加
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
 
         <Alert
           variant="success"
