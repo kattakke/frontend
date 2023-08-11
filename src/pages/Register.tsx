@@ -16,6 +16,7 @@ const Register: FC = () => {
   const [isbn, setIsbn] = useState('')
   const [isCameraOn, setIsCameraOn] = useState(false)
   const [alertOpen, setAlertOpen] = useState(false)
+  const [alertVariant, setAlertVariant] = useState<"success" | "error">("success")
   const [alertMessage, setAlertMessage] = useState('')
 
   const { data: books } = useAspidaSWR(apiClient.search, {
@@ -41,11 +42,13 @@ const Register: FC = () => {
       .then((res) => {
         console.log(res)
         setAlertMessage(`『${res.title ?? ''}』を追加しました`)
+        setAlertVariant("success")
         setAlertOpen(true)
       })
       .catch((err) => {
         console.log(err)
         setAlertMessage('エラーが発生しました')
+        setAlertVariant("error")
         setAlertOpen(true)
       })
   }
@@ -132,7 +135,7 @@ const Register: FC = () => {
         )}
 
         <Alert
-          variant="success"
+          variant={alertVariant}
           open={alertOpen}
           onOpenChange={setAlertOpen}
           message={alertMessage}

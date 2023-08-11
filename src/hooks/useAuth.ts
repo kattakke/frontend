@@ -97,7 +97,9 @@ export const useProvideAuth = (): Auth => {
   }, [token])
 
   const getUser: Auth['getUser'] = useCallback(() => {
-    if (user === null) throw new Error('not logged in')
+    if (user === null) {
+      return {}
+    }
     return user
   }, [user])
 

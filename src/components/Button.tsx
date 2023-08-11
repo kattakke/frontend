@@ -23,13 +23,13 @@ const Button: FC<Props> = ({
 }) => {
   if (gradation) {
     const colorStyle = {
-      main: 'from-main to-main/20',
-      accent: 'from-accent to-accent/20',
+      main: 'from-main to-main/40',
+      accent: 'from-accent to-accent/40',
     }
     return (
       <button
         className={[
-          'h-20 w-full rounded-full bg-gradient-to-br',
+          'h-20 w-full rounded-full bg-gradient-to-br shadow-lg',
           colorStyle[color],
           className,
         ].join(' ')}
