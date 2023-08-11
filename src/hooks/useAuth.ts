@@ -73,13 +73,19 @@ export const useProvideAuth = (): Auth => {
   const autoLogin: Auth['autoLogin'] = useCallback(async () => {
     const newToken = localStorage.getItem(LS_TOKEN_KEY)
     if (newToken == null) throw new Error('token not found')
-    const newUser = await apiClient.auth.me.$get({
-      headers: constructAuthHeader(newToken),
-    })
-    setIsAuth(true)
-    setToken(newToken)
-    setUser(newUser)
-    localStorage.setItem(LS_TOKEN_KEY, newToken)
+    await apiClient.auth.me
+      .$get({
+        headers: constructAuthHeader(newToken),
+      })
+      .then((newUser) => {
+        setIsAuth(true)
+        setToken(newToken)
+        setUser(newUser)
+      })
+      .catch(() => {
+        localStorage.removeItem(LS_TOKEN_KEY)
+        throw new Error('invalid token')
+      })
   }, [])
 
   const getAuthHeader: Auth['getAuthHeader'] = useCallback(() => {
