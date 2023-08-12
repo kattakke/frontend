@@ -11,6 +11,7 @@ const Signup: FC = () => {
   const [secondPassword, setSecondPassword] = useState('')
   const [alertOpen, setAlertOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const { signup } = useAuth()
   const navigate = useNavigate()
 
@@ -25,14 +26,18 @@ const Signup: FC = () => {
       setAlertOpen(true)
       return
     }
+    setIsLoading(true)
     signup(email, firstPassword)
       .then(() => {
         navigate('/home')
       })
       .catch((e) => {
-        setAlertMessage("登録に失敗しました")
+        setAlertMessage('登録に失敗しました')
         setAlertOpen(true)
         throw e
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -94,7 +99,7 @@ const Signup: FC = () => {
           </div>
         </div>
         <div className="mt-6 flex flex-col items-center justify-center pb-5">
-          <Button className="mb-3" onClick={onSignup}>
+          <Button className="mb-3" onClick={onSignup} loading={isLoading}>
             登録
           </Button>
           <Link to={'/login'}>

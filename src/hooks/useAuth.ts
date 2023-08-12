@@ -71,7 +71,7 @@ export const useProvideAuth = (): Auth => {
     setToken(null)
     setUser(null)
     localStorage.removeItem(LS_TOKEN_KEY)
-  }, [])
+  }, [token])
 
   const autoLogin: Auth['autoLogin'] = useCallback(async () => {
     const newToken = localStorage.getItem(LS_TOKEN_KEY)
@@ -97,7 +97,9 @@ export const useProvideAuth = (): Auth => {
   }, [token])
 
   const getUser: Auth['getUser'] = useCallback(() => {
-    if (user === null) throw new Error('not logged in')
+    if (user === null) {
+      return {}
+    }
     return user
   }, [user])
 

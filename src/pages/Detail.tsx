@@ -86,7 +86,7 @@ const Detail: FC = () => {
               <td className="w-2/5 font-bold text-main">
                 <p className="px-4 py-2">登録日時</p>
               </td>
-              <td>{book.createdAt}</td>
+              <td>{book.createdAt?.slice(0, 10)}</td>
             </tr>
           </tbody>
         </table>
