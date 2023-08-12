@@ -20,7 +20,8 @@ const Login: FC = () => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const [alertOpen, setAlertOpen] = useState(false)
-  const [alertMessage, setAlertMessage] = useState("")
+  const [alertMessage, setAlertMessage] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const { login, autoLogin } = useAuth()
 
   useEffect(() => {
@@ -31,14 +32,18 @@ const Login: FC = () => {
   }, [autoLogin, navigate, searchParams])
 
   const submitLogin = (): void => {
+    setIsLoading(true)
     void login(email, password)
       .then(() => {
         navigateAfterLogin(searchParams, navigate)
       })
       .catch((e) => {
-        setAlertMessage("ログインに失敗しました")
+        setAlertMessage('ログインに失敗しました')
         setAlertOpen(true)
         throw e
+      })
+      .finally(() => {
+        setIsLoading(false)
       })
   }
 
@@ -75,7 +80,7 @@ const Login: FC = () => {
           </div>
         </div>
         <div className="mt-6 flex flex-col items-center justify-center pb-5">
-          <Button className="mb-3" onClick={submitLogin}>
+          <Button className="mb-3" onClick={submitLogin} loading={isLoading}>
             ログイン
           </Button>
           <Link to={'/signup'}>

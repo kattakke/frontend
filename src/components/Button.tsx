@@ -9,6 +9,7 @@ type Props = {
   variant?: Variant
   gradation?: boolean
   disabled?: boolean
+  loading?: boolean
   className?: string
 } & ComponentPropsWithoutRef<'button'>
 
@@ -18,6 +19,7 @@ const Button: FC<Props> = ({
   variant = 'solid',
   gradation = false,
   disabled = false,
+  loading = false,
   className,
   ...props
 }) => {
@@ -51,14 +53,25 @@ const Button: FC<Props> = ({
     return (
       <button
         className={[
-          'rounded-lg font-bold h-[36px] w-[140px]',
+          'rounded-lg font-bold h-[36px] w-[140px] disabled:opacity-75',
           colorStyle(color, variant),
           className,
         ].join(' ')}
-        disabled={disabled}
+        disabled={disabled || loading}
         {...props}
       >
-        {children}
+        {loading ? (
+          <div className="flex justify-center" aria-label="読み込み中">
+            <div
+              className={[
+                'h-6 w-6 mt-1.5 animate-spin rounded-full border-2 border-white border-t-transparent',
+                className,
+              ].join(' ')}
+            ></div>
+          </div>
+        ) : (
+          children
+        )}
       </button>
     )
   }
