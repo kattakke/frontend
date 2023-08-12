@@ -8,7 +8,7 @@ const Setting: FC = () => {
 
   return (
     <div className="pt-10 sm:pt-5">
-      <div className="rounded-3xl bg-white p-8 sm:p-5 shadow-md sm:h-[500px] sm:overflow-y-scroll">
+      <div className="rounded-3xl bg-white p-8 shadow-md sm:h-[500px] sm:overflow-y-scroll sm:p-5">
         <h1 className="pb-6 text-center text-xl">プロフィールを変更</h1>
         <div className="space-y-2 pb-6">
           <p className="font-light">名前</p>
