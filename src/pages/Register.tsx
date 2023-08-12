@@ -107,11 +107,9 @@ const Register: FC = () => {
               type="text"
               onChange={(e) => {
                 setIsbn(e.target.value)
-              }}
-              value={isbn}
-              onBlur={() => {
                 onSearchBooks()
               }}
+              value={isbn}
             />
           </div>
         </div>
